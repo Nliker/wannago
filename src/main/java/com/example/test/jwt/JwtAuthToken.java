@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.ssafy.wannago.errorcode.JwtErrorCode;
-import com.ssafy.wannago.exception.CustomException;
 import com.ssafy.wannago.exception.JwtException;
 
 import io.jsonwebtoken.Claims;
