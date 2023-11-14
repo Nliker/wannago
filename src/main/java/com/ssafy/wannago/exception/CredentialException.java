@@ -3,7 +3,7 @@ package com.ssafy.wannago.exception;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CredentialExeption extends Exception implements CustomException{
+public class CredentialException extends Exception implements CustomException{
 	private final int code;
 	private final String msg;
 	
