@@ -11,7 +11,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 @SpringBootApplication
 @Configuration
-@ComponentScan(basePackages = {"com.example"})
+@ComponentScan(basePackages = {"com.ssafy"})
 public class WannagoApplication {
 
 	public static void main(String[] args) {
