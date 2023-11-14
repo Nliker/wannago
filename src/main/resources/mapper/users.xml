@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test.user.model.mapper.UserMapper">
+	<resultMap type="userDto" id="userMap">
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_password" property="userPassword"/>
+		<result column="user_email_id" property="userEmailId"/>
+		<result column="user_email_domain" property="userEmailDomain"/>
+		<result column="user_role" property="userRole"/>
+	</resultMap>
+	
+	
+	<select id="selectByUserId" parameterType="String" resultMap="userMap">
+		select *
+		from users
+		where user_id = #{id}
+	</select>
+	
+	<select id="selectByUserEmailId" parameterType="String" resultMap="userMap">
+		select *
+		from users
+		where user_email_id = #{id}
+	</select>
+	
+	
+	<insert id="insertUser" parameterType="userDto">
+		insert users(user_id,user_name,user_password,user_email_id,user_email_domain,user_role)
+		values(#{userId},#{userName},#{userPassword},#{userEmailId},#{userEmailDomain},#{userRole})
+	</insert>
+</mapper>
