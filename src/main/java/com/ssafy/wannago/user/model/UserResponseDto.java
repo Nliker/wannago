@@ -9,10 +9,10 @@ public class UserResponseDto {
 	private String userName;
 	private String userRole;
 	
-	public UserResponseDto(String userEmailId,String userEmailDomain,String userName,String userRole) {
-		this.userEmail=userEmailId+"@"+userEmailDomain;
-		this.userName=userName;
-		this.userRole=userRole;
+	public UserResponseDto(UserDto user) {
+		this.userEmail=user.getUserEmailId()+"@"+user.getUserEmailDomain();
+		this.userName=user.getUserName();
+		this.userRole=user.getUserRole();
 	}
 
 	@Override
