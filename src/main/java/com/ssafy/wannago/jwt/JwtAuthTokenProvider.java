@@ -1,4 +1,4 @@
-package com.example.wannago.jwt;
+package com.ssafy.wannago.jwt;
 
 import java.security.Key;
 import java.util.Base64;

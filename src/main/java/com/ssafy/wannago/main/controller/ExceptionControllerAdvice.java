@@ -1,4 +1,4 @@
-package com.example.wannago.main.controller;
+package com.ssafy.wannago.main.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

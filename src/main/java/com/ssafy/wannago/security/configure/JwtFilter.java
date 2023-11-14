@@ -1,4 +1,4 @@
-package com.example.security.configure;
+package com.ssafy.wannago.security.configure;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.wannago.jwt.JwtAuthToken;
-import com.example.wannago.jwt.JwtAuthTokenProvider;
 import com.ssafy.wannago.errorcode.JwtErrorCode;
 import com.ssafy.wannago.exception.JwtException;
+import com.ssafy.wannago.jwt.JwtAuthToken;
+import com.ssafy.wannago.jwt.JwtAuthTokenProvider;
 
 import lombok.extern.slf4j.Slf4j;
 

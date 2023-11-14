@@ -1,4 +1,4 @@
-package com.example.wannago.response;
+package com.ssafy.wannago.response;
 
 import javax.servlet.http.HttpServletResponse;
 

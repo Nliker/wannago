@@ -1,4 +1,4 @@
-package com.example.wannago.jwt;
+package com.ssafy.wannago.jwt;
 
 
 public interface AuthToken<T> {

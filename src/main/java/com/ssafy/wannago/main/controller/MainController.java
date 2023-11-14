@@ -1,4 +1,4 @@
-package com.example.wannago.main.controller;
+package com.ssafy.wannago.main.controller;
 
 import java.util.HashMap;
 import java.util.Map;

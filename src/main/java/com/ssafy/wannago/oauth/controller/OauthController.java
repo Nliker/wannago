@@ -1,4 +1,4 @@
-package com.example.wannago.oauth.controller;
+package com.ssafy.wannago.oauth.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.example.wannago.user.model.service.UserService;
+import com.ssafy.wannago.user.model.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

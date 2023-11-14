@@ -1,4 +1,4 @@
-package com.example.wannago.jwt;
+package com.ssafy.wannago.jwt;
 
 import java.util.Date;
 import java.util.Map;

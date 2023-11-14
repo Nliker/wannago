@@ -1,9 +1,9 @@
-package com.example.wannago.user.model.service;
+package com.ssafy.wannago.user.model.service;
 
 import java.sql.SQLException;
 
-import com.example.wannago.user.model.UserDto;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.ssafy.wannago.user.model.UserDto;
 
 
 public interface UserService {

@@ -1,4 +1,4 @@
-package com.example.wannago.user.model;
+package com.ssafy.wannago.user.model;
 
 import lombok.Getter;
 import lombok.Setter;

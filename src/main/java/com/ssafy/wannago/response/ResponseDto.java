@@ -1,4 +1,4 @@
-package com.example.wannago.response;
+package com.ssafy.wannago.response;
 
 import lombok.Getter;
 import lombok.Setter;

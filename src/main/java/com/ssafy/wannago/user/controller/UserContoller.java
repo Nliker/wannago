@@ -1,4 +1,4 @@
-package com.example.wannago.user.controller;
+package com.ssafy.wannago.user.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.wannago.user.model.UserDto;
-import com.example.wannago.user.model.service.UserService;
+import com.ssafy.wannago.user.model.UserDto;
+import com.ssafy.wannago.user.model.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

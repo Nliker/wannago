@@ -1,4 +1,4 @@
-package com.example.wannago.user.model.service;
+package com.ssafy.wannago.user.model.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -18,13 +18,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.wannago.jwt.JwtAuthToken;
-import com.example.wannago.jwt.JwtAuthTokenProvider;
-import com.example.wannago.user.model.UserDto;
-import com.example.wannago.user.model.mapper.UserMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ssafy.wannago.errorcode.CredentialErrorCode;
 import com.ssafy.wannago.exception.CredentialExeption;
+import com.ssafy.wannago.jwt.JwtAuthToken;
+import com.ssafy.wannago.jwt.JwtAuthTokenProvider;
+import com.ssafy.wannago.user.model.UserDto;
+import com.ssafy.wannago.user.model.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

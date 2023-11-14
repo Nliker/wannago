@@ -1,4 +1,4 @@
-package com.example.security.configure;
+package com.ssafy.wannago.security.configure;
 
 import java.util.Arrays;
 
@@ -31,7 +31,8 @@ public class SecurityConfig {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 	
-	@Bean SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+	@Bean 
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
 		log.debug(Arrays.deepToString(allowedUris));
 		return httpSecurity
 				.csrf().disable()
