@@ -26,7 +26,7 @@ public class OauthController {
 	private final UserService userService;
 	
 	@GetMapping("/redirect/{registrationId}")
-	public RedirectView  redirect(@PathVariable String registrationId) {
+	public RedirectView redirect(@PathVariable String registrationId) {
 		log.debug("redirect/"+registrationId);
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl(env.getProperty("oauth2."+registrationId+".login-uri"));
