@@ -18,8 +18,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.test.jwt.JwtAuthToken;
-import com.example.test.jwt.JwtAuthTokenProvider;
+import com.example.wannago.jwt.JwtAuthToken;
+import com.example.wannago.jwt.JwtAuthTokenProvider;
 import com.example.wannago.user.model.UserDto;
 import com.example.wannago.user.model.mapper.UserMapper;
 import com.fasterxml.jackson.databind.JsonNode;

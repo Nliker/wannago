@@ -1,4 +1,4 @@
-package com.example.test.jwt;
+package com.example.wannago.jwt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.test.jwt.JwtAuthToken;
-import com.example.test.jwt.JwtAuthTokenProvider;
+import com.example.wannago.jwt.JwtAuthToken;
+import com.example.wannago.jwt.JwtAuthTokenProvider;
 import com.ssafy.wannago.errorcode.JwtErrorCode;
 import com.ssafy.wannago.exception.JwtException;
 
