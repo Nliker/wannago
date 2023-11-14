@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController("backapi")
+@RestController
 @RequiredArgsConstructor
 public class MainController {
 	
