@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ssafy.wannago.user.model.UserDto;
+import com.ssafy.wannago.user.model.UserResponseDto;
 
 
 public interface UserService {
@@ -13,4 +14,5 @@ public interface UserService {
 	JsonNode getSocialUserResource(String accessToken, String registrationId) throws Exception;
 	String createToken(UserDto user) throws Exception;
 	void createUser(UserDto user) throws Exception;
+	UserResponseDto getUserInfo(String userId) throws Exception;
 }

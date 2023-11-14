@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.ssafy.wannago.exception.CredentialExeption;
+import com.ssafy.wannago.exception.CredentialException;
 import com.ssafy.wannago.exception.CustomException;
 import com.ssafy.wannago.exception.JwtException;
 
@@ -25,7 +25,7 @@ public class ExceptionControllerAdvice {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
 	}
 	
-	@ExceptionHandler(CredentialExeption.class)
+	@ExceptionHandler(CredentialException.class)
 	public ResponseEntity<CustomException> handleCredentialExeption(CustomException e, Model model) {
 		log.debug("Exception type:"+e.getClass());
 		log.error("Exception 발생 : {}",e.getCode());

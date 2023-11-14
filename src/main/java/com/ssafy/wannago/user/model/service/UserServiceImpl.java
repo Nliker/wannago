@@ -20,10 +20,11 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ssafy.wannago.errorcode.CredentialErrorCode;
-import com.ssafy.wannago.exception.CredentialExeption;
+import com.ssafy.wannago.exception.CredentialException;
 import com.ssafy.wannago.jwt.JwtAuthToken;
 import com.ssafy.wannago.jwt.JwtAuthTokenProvider;
 import com.ssafy.wannago.user.model.UserDto;
+import com.ssafy.wannago.user.model.UserResponseDto;
 import com.ssafy.wannago.user.model.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -45,12 +46,12 @@ public class UserServiceImpl implements UserService{
 		
 		UserDto loginUser=userMapper.selectByUserId(user.getUserId());
 		if(loginUser==null) {
-			throw new CredentialExeption(CredentialErrorCode.NotFoundId.getCode(),CredentialErrorCode.NotFoundId.getDescription());
+			throw new CredentialException(CredentialErrorCode.NotFoundId.getCode(),CredentialErrorCode.NotFoundId.getDescription());
 		}
 		log.info("userById: "+loginUser.toString());
 		boolean check =passwordEncoder.matches(user.getUserPassword(),loginUser.getUserPassword());
 		if(!check) {
-			throw new CredentialExeption(CredentialErrorCode.NotMatchIdPassword.getCode(),CredentialErrorCode.NotMatchIdPassword.getDescription());
+			throw new CredentialException(CredentialErrorCode.NotMatchIdPassword.getCode(),CredentialErrorCode.NotMatchIdPassword.getDescription());
 		}
 		return createToken(loginUser);
 	}
@@ -60,12 +61,12 @@ public class UserServiceImpl implements UserService{
 		log.info("class:=================createUser====================");
 		UserDto userById=userMapper.selectByUserId(user.getUserId());
 		if(userById!=null) {
-			throw new CredentialExeption(CredentialErrorCode.AlreadyExistId.getCode(),CredentialErrorCode.AlreadyExistId.getDescription());
+			throw new CredentialException(CredentialErrorCode.AlreadyExistId.getCode(),CredentialErrorCode.AlreadyExistId.getDescription());
 		}
 		
 		UserDto userByEmailId=userMapper.selectByUserEmailId(user.getUserEmailId());
 		if(userByEmailId!=null) {
-			throw new CredentialExeption(CredentialErrorCode.AlreadyEmailId.getCode(),CredentialErrorCode.AlreadyEmailId.getDescription());
+			throw new CredentialException(CredentialErrorCode.AlreadyEmailId.getCode(),CredentialErrorCode.AlreadyEmailId.getDescription());
 		}
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         log.info("insertUser: "+user.toString());
@@ -166,6 +167,13 @@ public class UserServiceImpl implements UserService{
         log.debug(entity.toString());
         return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
     }
-	
-	
+
+	@Override
+	public UserResponseDto getUserInfo(String userId) throws Exception{
+		UserDto user=userMapper.selectByUserId(userId);
+		if(user==null) {
+			throw new CredentialException(CredentialErrorCode.NotFoundId.getCode(),CredentialErrorCode.NotFoundId.getDescription());
+		}
+		return new UserResponseDto(user);
+	}	
 }
