@@ -1,4 +1,4 @@
-package com.example.test.user.model.service;
+package com.example.wannago.user.model.service;
 
 import java.sql.SQLException;
 
