@@ -9,20 +9,21 @@ import lombok.Setter;
 public class ConceptResponseDto {
 	private int conceptNo;
 	private String conceptTitle;
-	private String conceptDescription;
-	private int conceptSharedCnt;
-	private String userId;
-	private String userName;
+	private String media;
+	private int bucketTotalCnt;
+	private int bucketDoneCnt;
 	
-	public ConceptResponseDto(ConceptDto concept) {
+	
+	public ConceptResponseDto(ConceptDto concept,String media,int bucketTotalCnt,int bucketDoneCnt) {
 		this.conceptNo=concept.getConceptNo();
 		this.conceptTitle=concept.getConceptTitle();
-		this.conceptSharedCnt=concept.getConceptSharedCnt();
-		this.conceptDescription=concept.getConceptDescription();
-		this.userId=concept.getUserId();
-		this.userName=concept.getUserName();
+		this.media=media;
+		this.bucketTotalCnt=bucketTotalCnt;
+		this.bucketDoneCnt=bucketDoneCnt;
 	}
-	public ConceptResponseDto() {
-		super();
+	
+	public ConceptResponseDto(ConceptDto concept) { // set meta data later
+		this.conceptNo=concept.getConceptNo();
+		this.conceptTitle=concept.getConceptTitle();
 	}
 }
