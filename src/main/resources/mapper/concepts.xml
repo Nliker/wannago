@@ -11,8 +11,7 @@
 		<result column="user_id" property="userId"/>
 		<result column="user_name" property="userName"/>
 	</resultMap>
-	
-	
+
 	<insert id="insertConcept" parameterType="conceptDto" >
 		insert into concepts(
 			concept_title,
@@ -34,6 +33,11 @@
 	<select id="selectByConceptNo" parameterType="int" resultMap="conceptMap">
 		select * from concepts
 		where concept_no=#{conceptNo}
+	</select>
+	
+	<select id="selectByUserId" parameterType="String" resultMap="conceptMap">
+		select * from concepts
+		where user_id=#{user_id}
 	</select>
 	
 </mapper>

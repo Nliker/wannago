@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.wannago.media.model.mapper.MediaMapper">
+
+	<resultMap type="mediaDto" id="mediaMap">
+		<result column="media_no" property="mediaNo"/>
+		<result column="concept_no" property="conceptNo"/>
+		<result column="media_save_folder" property="mediaSaveFolder"/>
+		<result column="media_origin_file" property="mediaOriginFile"/>
+		<result column="media_save_file" property="mediaSaveFile"/>
+		<result column="media_type" property="mediaType"/>
+	</resultMap>
+	
+	
+	<select id="selectRandomOneByConceptNo" parameterType='int' resultMap="mediaMap">
+		select * from concept_medias 
+		where concept_no=#{conceptNo} 
+		order by RAND() LIMIT 1;
+	</select>
+	
+</mapper>
