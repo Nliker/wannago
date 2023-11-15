@@ -170,10 +170,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserResponseDto getUserInfo(String userId) throws Exception{
-		UserDto user=userMapper.selectByUserId(userId);
-		if(user==null) {
-			throw new CredentialException(CredentialErrorCode.NotFoundId.getCode(),CredentialErrorCode.NotFoundId.getDescription());
-		}
-		return new UserResponseDto(user);
+		return new UserResponseDto(userMapper.selectByUserId(userId));
 	}	
 }
