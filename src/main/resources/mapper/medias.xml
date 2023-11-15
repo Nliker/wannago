@@ -20,4 +20,9 @@
 		order by RAND() LIMIT 1;
 	</select>
 	
+	<select id="selectByConceptNo" parameterType="int" resultMap="mediaMap">
+		select * from concept_medias 
+		where concept_no=#{conceptNo}
+	</select>
+	
 </mapper>
