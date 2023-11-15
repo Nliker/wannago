@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.wannago.concept.model.ConceptDto;
+import com.ssafy.wannago.concept.model.ConceptResponseDto;
+import com.ssafy.wannago.concept.model.service.ConceptService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,9 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ConceptController {
 	private final ConceptService conceptService;
 	
-	@PostMapping("/")
+	@PostMapping("")
 	public ResponseEntity<Map<String,ConceptResponseDto>> concept(Authentication authentication,@RequestBody ConceptDto concept) throws Exception{
-		Map<String,String> result=new HashMap<>();
+		Map<String,ConceptResponseDto> result=new HashMap<>();
 		result.put("conceptInfo",conceptService.createConcept(authentication.getName(),concept));
 		return ResponseEntity.ok().body(result);
 	}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.wannago.concept.model.mapper.ConceptMapper">
+	<resultMap type="conceptDto" id="conceptMap">
+		<result column="concept_no" property="conceptNo"/>
+		<result column="concept_title" property="conceptTitle"/>
+		<result column="concept_description" property="conceptDescription"/>
+		<result column="concept_shared_cnt" property="conceptSharedCnt"/>
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+	</resultMap>
+	
+	
+	<insert id="insertConcept" parameterType="conceptDto" >
+		insert into concepts(
+			concept_title,
+			concept_description,
+			user_id,
+			user_name
+		) values(
+			#{conceptTitle},
+			#{conceptDescription},
+			#{userId},
+			#{userName}
+		)
+		<selectKey resultType="int" keyProperty="conceptNo" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	
+	<select id="selectByConceptNo" parameterType="int" resultMap="conceptMap">
+		select * from concepts
+		where concept_no=#{conceptNo}
+	</select>
+	
+</mapper>
