@@ -73,11 +73,18 @@ public class ConceptServiceImpl implements ConceptService{
 	private void setConceptMetaData(ConceptResponseDto conceptResponseDto,int conceptNo) throws SQLException {
 		int bucketCnt=bucketMapper.selectCntByConceptNo(conceptNo);
 		int bucketDone=bucketMapper.selectDoneCntByConceptNo(conceptNo);
-		MediaDto media=mediaMapper.selectRandomOneByConceptNo(conceptNo);
-		String mediaLink=(media==null)?"default media link":media.getLink();
+		MediaDto RandomMedia=mediaMapper.selectRandomOneByConceptNo(conceptNo);
+		String mediaLink=(RandomMedia==null)?"default media link":RandomMedia.getLink();
 		conceptResponseDto.setBucketDoneCnt(bucketDone);
 		conceptResponseDto.setBucketTotalCnt(bucketCnt);
-		conceptResponseDto.setMedia(mediaLink);		
+		conceptResponseDto.setMedia(mediaLink);	
+		if (conceptResponseDto instanceof ConceptDetailResponseDto) {
+			List<String> mediaList=new ArrayList<>();
+			for(MediaDto media:mediaMapper.selectByConceptNo(conceptNo)) {
+				mediaList.add(media.getLink());
+			}
+			((ConceptDetailResponseDto)conceptResponseDto).setMediaList(mediaList);
+		}	
 	}
 }
 
