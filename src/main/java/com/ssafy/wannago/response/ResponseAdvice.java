@@ -3,6 +3,7 @@ package com.ssafy.wannago.response;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -29,15 +30,16 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         HttpServletResponse servletResponse =
                 ((ServletServerHttpResponse) response).getServletResponse();
         int status = servletResponse.getStatus();
-
+        
         if(body==null) {
         	return new ResponseDto("empty",status,"Request was successful");
         }
         
         log.debug("body class: "+body.getClass().toString());
         log.debug("body: "+body);
-        
-        if (body instanceof CustomException) {//실패한 반환
+        if(body instanceof Resource) {
+        	return body;
+        }else if (body instanceof CustomException) {//실패한 반환
         	CustomException Ce=(CustomException)body;
         	
         	log.debug("사용자 실패 처리");
@@ -48,7 +50,6 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         	log.debug("내부 실패 처리");
         	return new ResponseDto("empty",status,e.getMessage());
         }
-        
         log.debug("성공된 반환 처리");
         return new ResponseDto(body,status,"Request was successful");
     }
