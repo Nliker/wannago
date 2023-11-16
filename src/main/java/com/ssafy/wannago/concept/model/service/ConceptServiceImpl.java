@@ -86,7 +86,7 @@ public class ConceptServiceImpl implements ConceptService{
             File folder = new File(saveFolder);
             if (!folder.exists())
                 folder.mkdirs();
-            String extension=originalFileName.substring(originalFileName.lastIndexOf('.')+1);
+            String extension=originalFileName.substring(originalFileName.lastIndexOf('.')+1).toLowerCase();
             String saveFileName = UUID.randomUUID().toString()
                     +"."+extension;
             file.transferTo(new File(folder, saveFileName));
