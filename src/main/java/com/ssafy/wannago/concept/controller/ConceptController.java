@@ -1,21 +1,13 @@
 package com.ssafy.wannago.concept.controller;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,9 +29,9 @@ public class ConceptController {
 	private final ConceptService conceptService;
 	
 	@PostMapping("")
-	public ResponseEntity<Map<String,ConceptResponseDto>> concept(Authentication authentication,ConceptDto concept,@RequestParam("upfile") MultipartFile[] medias) throws Exception{
+	public ResponseEntity<Map<String,ConceptResponseDto>> concept(Authentication authentication,ConceptDto concept,@RequestParam("upfile") MultipartFile[] files) throws Exception{
 		Map<String,ConceptResponseDto> result=new HashMap<>();
-		result.put("conceptInfo",conceptService.createConcept(authentication.getName(),concept,medias));
+		result.put("conceptInfo",conceptService.createConcept(authentication.getName(),concept,files));
 	
 		return ResponseEntity.ok().body(result);
 	}
