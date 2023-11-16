@@ -50,4 +50,17 @@ public class ConceptController {
 		return ResponseEntity.ok().body(result);
 	}
 	
+	@GetMapping("/{conceptNo}/medias")
+	public ResponseEntity<Map<String,ConceptDetailResponseDto>> conceptMedias(Authentication authentication,@PathVariable int conceptNo) throws Exception{
+		Map<String,ConceptDetailResponseDto> result=new HashMap<>();
+		result.put("mediaInfoList",conceptService.getConceptMediaList(authentication.getName(),conceptNo));
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@PostMapping("/{conceptNo}/medias")
+	public ResponseEntity<Map<String,ConceptDetailResponseDto>> conceptMedias(Authentication authentication,@RequestParam("upfile") MultipartFile[] files,@PathVariable int conceptNo) throws Exception{
+		Map<String,ConceptDetailResponseDto> result=new HashMap<>();
+		return ResponseEntity.ok().body(result);
+	}
+	
 }
