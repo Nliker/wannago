@@ -1,5 +1,8 @@
 package com.ssafy.wannago;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -29,5 +32,10 @@ public class WannagoApplication {
 	@Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+	
+	@Bean
+    public ExecutorService executorService () {
+		return Executors.newCachedThreadPool();
     }
 }
