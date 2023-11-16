@@ -39,4 +39,9 @@
 		select * from concepts
 		where user_id=#{user_id}
 	</select>
+	
+	<delete id="deleteByConceptNo" parameterType="int">
+		delete from concepts 
+		where concept_no=#{conceptNo}
+	</delete>
 </mapper>

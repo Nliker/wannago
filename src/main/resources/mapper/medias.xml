@@ -53,4 +53,9 @@
 		delete from concept_medias
 		where media_no=#{mediaNo}
 	</delete>
+	
+	<delete id="deleteByConceptNo" parameterType="int">
+		delete from concept_medias
+		where concept_no=#{conceptNo}
+	</delete>
 </mapper>
