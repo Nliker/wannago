@@ -19,4 +19,6 @@ public interface MediaMapper {
 	MediaDto selectByMediaNo(int mediaNo) throws SQLException;
 
 	void deleteByMediaNo(int mediaNo) throws SQLException;
+
+	void deleteByConceptNo(int conceptNo) throws SQLException;
 }

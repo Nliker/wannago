@@ -199,5 +199,19 @@ public class ConceptServiceImpl implements ConceptService{
 			mediaMapper.insertMediaList(mediaList);
 		}
 	}
+	@Transactional
+	@Override
+	public void deleteConcept(String userId, int conceptNo) throws Exception {
+		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
+		if(concept==null) {
+			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
+		}
+		if(!concept.getUserId().equals(userId)) {
+			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
+		}
+		mediaMapper.deleteByConceptNo(conceptNo);
+		conceptMapper.deleteByConceptNo(conceptNo);
+		
+	}
 }
 

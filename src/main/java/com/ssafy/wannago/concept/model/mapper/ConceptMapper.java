@@ -14,4 +14,6 @@ public interface ConceptMapper {
 	List<ConceptDto> selectByUserId(String userId) throws Exception;
 
 	ConceptDto selectByConceptNo(int conceptNo) throws Exception;
+
+	void deleteByConceptNo(int conceptNo) throws Exception;
 }

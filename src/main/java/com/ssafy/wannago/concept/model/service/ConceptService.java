@@ -20,6 +20,6 @@ public interface ConceptService {
 
 	void addConceptMediaList(String userId, int conceptNo, MultipartFile[] files) throws Exception;
 
-	void deleteConcept(String name, int conceptNo) throws Exception;
+	void deleteConcept(String userId, int conceptNo) throws Exception;
 
 }
