@@ -67,5 +67,11 @@ public class ConceptController {
 		return ResponseEntity.ok().body(result);
 	}
 	
-
+	@DeleteMapping("/{conceptNo}")
+	public ResponseEntity<Map<String,String>> deleteConcept(Authentication authentication,@PathVariable int conceptNo) throws Exception{
+		conceptService.deleteConcept(authentication.getName(),conceptNo);
+		Map<String,String> result=new HashMap<>();
+		result.put("result","successful");
+		return ResponseEntity.ok().body(result);
+	}
 }
