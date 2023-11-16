@@ -154,15 +154,49 @@ public class ConceptServiceImpl implements ConceptService{
 		if (conceptResponseDto instanceof ConceptDetailResponseDto) {
 			List<MediaResponseDto> mediaList=new ArrayList<>();
 			for(MediaDto media:mediaMapper.selectByConceptNo(conceptNo)) {
-				MediaResponseDto mediaReponse=new MediaResponseDto(media.getMediaNo(),media.getLink());
+				MediaResponseDto mediaReponse=new MediaResponseDto(media.getMediaNo(),media.getMediaType());
 				mediaList.add(mediaReponse);
 			}
 			((ConceptDetailResponseDto)conceptResponseDto).setMediaInfoList(mediaList);
 		}else {
 			MediaDto RandomMedia=mediaMapper.selectRandomOneByConceptNo(conceptNo);
 			MediaResponseDto mediaReponse= (RandomMedia==null)?
-					new MediaResponseDto(0,"raw"):new MediaResponseDto(RandomMedia.getMediaNo(),RandomMedia.getLink());
+					new MediaResponseDto(0,"raw"):new MediaResponseDto(RandomMedia.getMediaNo(),RandomMedia.getMediaType());
 			conceptResponseDto.setMediaInfoList(Arrays.asList(mediaReponse));
+		}
+	}
+
+	@Override
+	public List<MediaResponseDto> getConceptMediaList(String userId, int conceptNo) throws Exception {
+		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
+		if(concept==null) {
+			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
+		}
+		if(!concept.getUserId().equals(userId)) {
+			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
+		}
+		List<MediaResponseDto> mediaList=new ArrayList<>();
+		for(MediaDto media:mediaMapper.selectByConceptNo(conceptNo)) {
+			MediaResponseDto mediaReponse=new MediaResponseDto(media.getMediaNo(),media.getMediaType());
+			mediaList.add(mediaReponse);
+		}
+		
+		return mediaList;
+	}
+
+	@Override
+	public void addConceptMediaList(String userId, int conceptNo, MultipartFile[] files) throws Exception {
+		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
+		if(concept==null) {
+			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
+		}
+		if(!concept.getUserId().equals(userId)) {
+			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
+		}
+		
+		List<MediaDto> mediaList=saveFile(files,concept.getConceptNo());
+		if(mediaList.size()!=0) {
+			mediaMapper.insertMediaList(mediaList);
 		}
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.ssafy.wannago.concept.model.ConceptDetailResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDto;
 import com.ssafy.wannago.concept.model.ConceptResponseDto;
 import com.ssafy.wannago.concept.model.service.ConceptService;
+import com.ssafy.wannago.media.model.MediaResponseDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,16 +53,19 @@ public class ConceptController {
 	}
 	
 	@GetMapping("/{conceptNo}/medias")
-	public ResponseEntity<Map<String,ConceptDetailResponseDto>> conceptMedias(Authentication authentication,@PathVariable int conceptNo) throws Exception{
-		Map<String,ConceptDetailResponseDto> result=new HashMap<>();
+	public ResponseEntity<Map<String,List<MediaResponseDto>>> conceptMedias(Authentication authentication,@PathVariable int conceptNo) throws Exception{
+		Map<String,List<MediaResponseDto>> result=new HashMap<>();
 		result.put("mediaInfoList",conceptService.getConceptMediaList(authentication.getName(),conceptNo));
 		return ResponseEntity.ok().body(result);
 	}
 	
 	@PostMapping("/{conceptNo}/medias")
-	public ResponseEntity<Map<String,ConceptDetailResponseDto>> conceptMedias(Authentication authentication,@RequestParam("upfile") MultipartFile[] files,@PathVariable int conceptNo) throws Exception{
-		Map<String,ConceptDetailResponseDto> result=new HashMap<>();
+	public ResponseEntity<Map<String,String>> conceptMedias(Authentication authentication,@RequestParam("upfile") MultipartFile[] files,@PathVariable int conceptNo) throws Exception{
+		conceptService.addConceptMediaList(authentication.getName(),conceptNo,files);
+		Map<String,String> result=new HashMap<>();
+		result.put("result","successful");
 		return ResponseEntity.ok().body(result);
 	}
 	
+
 }
