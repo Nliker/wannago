@@ -13,5 +13,8 @@ public interface MediaMapper {
 	MediaDto selectRandomOneByConceptNo(int conceptNo) throws SQLException;
 
 	List<MediaDto> selectByConceptNo(int conceptNo) throws SQLException;
+	 
+	void insertMediaList(List<MediaDto> mediaList) throws SQLException;
 
+	MediaDto selectByMediaNo(int mediaNo) throws SQLException;
 }
