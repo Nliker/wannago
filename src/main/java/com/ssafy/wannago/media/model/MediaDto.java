@@ -15,10 +15,6 @@ public class MediaDto {
 	private String mediaOriginFile;
 	private String mediaSaveFile;
 	private String mediaType;
-	
-	public String getLink() {
-		return "medias"+"/"+this.conceptNo;
-	}
 
 	public String getSavePath() {
 		return this.mediaSaveFolder+File.separator+this.mediaSaveFile;
