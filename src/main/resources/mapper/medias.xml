@@ -48,4 +48,9 @@
 		select * from concept_medias
 		where media_no=#{mediaNo}
 	</select>
+	
+	<delete id="deleteByMediaNo" parameterType="int">
+		delete from concept_medias
+		where media_no=#{mediaNo}
+	</delete>
 </mapper>
