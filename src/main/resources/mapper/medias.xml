@@ -25,4 +25,27 @@
 		where concept_no=#{conceptNo}
 	</select>
 	
+	<insert id="insertMediaList" parameterType="java.util.List" >
+		insert into concept_medias(
+			concept_no,
+			media_save_folder,
+			media_origin_file,
+			media_save_file,
+			media_type
+		) values
+	    <foreach collection="list" item="media" separator=",">
+	    (
+	          #{media.conceptNo}
+	        , #{media.mediaSaveFolder}
+	        , #{media.mediaOriginFile}
+	        , #{media.mediaSaveFile}
+	        , #{media.mediaType}
+	    )
+	    </foreach>
+	</insert>
+	
+	<select id="selectByMediaNo" parameterType="int" resultMap="mediaMap">
+		select * from concept_medias
+		where media_no=#{mediaNo}
+	</select>
 </mapper>
