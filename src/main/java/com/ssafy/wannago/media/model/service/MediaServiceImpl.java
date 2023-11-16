@@ -31,4 +31,17 @@ public class MediaServiceImpl implements MediaService {
 		}
 		return media;
 	}
+	@Override
+	public void deleteMedia(int mediaNo,String userId) throws Exception {	
+		MediaDto media=mediaMapper.selectByMediaNo(mediaNo);
+		if(media==null) {
+			throw new MediaException(MediaErrorCode.NotFoundMedia.getCode(),MediaErrorCode.NotFoundMedia.getDescription());
+		}
+		ConceptDto concept=conceptMapper.selectByConceptNo(media.getConceptNo());
+		if(!concept.getUserId().equals(userId)) {
+			throw new MediaException(MediaErrorCode.MediaUserIdNotMatch.getCode(),MediaErrorCode.MediaUserIdNotMatch.getDescription());
+		}
+		
+		mediaMapper.deleteByMediaNo(mediaNo);
+	}
 }
