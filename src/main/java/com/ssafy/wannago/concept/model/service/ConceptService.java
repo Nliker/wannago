@@ -1,6 +1,7 @@
 package com.ssafy.wannago.concept.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,7 @@ public interface ConceptService {
 
 	ConceptDetailResponseDto getConcept(String userId, int conceptNo) throws Exception;
 
-	List<MediaResponseDto> getConceptMediaList(String userId, int conceptNo)throws Exception;
+	List<MediaResponseDto> getConceptMediaList(String userId, int conceptNo,Map<String, String> map)throws Exception;
 
 	void addConceptMediaList(String userId, int conceptNo, MultipartFile[] files) throws Exception;
 

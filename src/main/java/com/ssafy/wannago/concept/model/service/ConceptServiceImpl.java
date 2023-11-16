@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +39,9 @@ public class ConceptServiceImpl implements ConceptService{
 	
 	@Value("${file.path}")
 	private String uploadPath;
+	
+	@Value("${concept.mediaListSize}")
+	private int conceptMediaListSize;
 	
 	@Value("${file.video.extensions}")
 	private String[] videoExtensionList;
@@ -153,7 +158,7 @@ public class ConceptServiceImpl implements ConceptService{
 		
 		if (conceptResponseDto instanceof ConceptDetailResponseDto) {
 			List<MediaResponseDto> mediaList=new ArrayList<>();
-			for(MediaDto media:mediaMapper.selectByConceptNo(conceptNo)) {
+			for(MediaDto media:mediaMapper.selectAllByConceptNo(conceptNo)) {
 				MediaResponseDto mediaReponse=new MediaResponseDto(media.getMediaNo(),media.getMediaType());
 				mediaList.add(mediaReponse);
 			}
@@ -167,7 +172,7 @@ public class ConceptServiceImpl implements ConceptService{
 	}
 
 	@Override
-	public List<MediaResponseDto> getConceptMediaList(String userId, int conceptNo) throws Exception {
+	public List<MediaResponseDto> getConceptMediaList(String userId, int conceptNo,Map<String, String> map) throws Exception {
 		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
 		if(concept==null) {
 			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
@@ -175,8 +180,15 @@ public class ConceptServiceImpl implements ConceptService{
 		if(!concept.getUserId().equals(userId)) {
 			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
 		}
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("start",map.get("start")==null?0:Integer.parseInt(map.get("start")));
+		param.put("size",map.get("size")==null?conceptMediaListSize:Integer.parseInt(map.get("size")));
+		param.put("type", map.get("type")==null?"all":map.get("type"));
+		param.put("conceptNo",conceptNo);
+		log.debug(param.toString());
 		List<MediaResponseDto> mediaList=new ArrayList<>();
-		for(MediaDto media:mediaMapper.selectByConceptNo(conceptNo)) {
+		for(MediaDto media:mediaMapper.selectByConceptNo(param)) {
 			MediaResponseDto mediaReponse=new MediaResponseDto(media.getMediaNo(),media.getMediaType());
 			mediaList.add(mediaReponse);
 		}
