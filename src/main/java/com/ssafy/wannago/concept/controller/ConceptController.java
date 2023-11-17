@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.wannago.bucket.model.BucketDto;
+import com.ssafy.wannago.bucket.model.BucketResponseDto;
+import com.ssafy.wannago.bucket.model.service.BucketService;
 import com.ssafy.wannago.concept.model.ConceptDetailResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDto;
 import com.ssafy.wannago.concept.model.ConceptResponseDto;
@@ -74,4 +78,21 @@ public class ConceptController {
 		result.put("result","successful");
 		return ResponseEntity.ok().body(result);
 	}
+	
+	@GetMapping("/{conceptNo}/buckets")
+	public ResponseEntity<Map<String,List<BucketResponseDto>>> conceptBuckets(Authentication authentication,@PathVariable int conceptNo) throws Exception{
+		Map<String,List<BucketResponseDto>> result=new HashMap<>();
+		result.put("bucketInfoList",conceptService.getBucketList(authentication.getName(),conceptNo));
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@PostMapping("/{conceptNo}/buckets")
+	public ResponseEntity<Map<String,String>> conceptBuckets(Authentication authentication,@PathVariable int conceptNo,@RequestBody BucketDto bucket) throws Exception{
+		conceptService.createBucket(authentication.getName(),conceptNo,bucket);
+		Map<String,String> result=new HashMap<>();
+		result.put("result","successful");
+		return ResponseEntity.ok().body(result);
+	}
+	
+	
 }
