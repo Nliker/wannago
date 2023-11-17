@@ -19,4 +19,12 @@ public interface BucketMapper {
 
 	void insertBucket(BucketDto bucket) throws SQLException;
 
+	BucketDto selectByBucketNo(int bucketNo) throws SQLException;
+
+	String selectBucketUserId(int bucketNo) throws SQLException;
+
+	void deleteByBucketNo(int bucketNo) throws SQLException;
+
+	void updateByBucketNo(BucketDto bucket) throws SQLException;
+
 }

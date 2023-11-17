@@ -13,6 +13,14 @@
 		<result column="addr1" property="addr"/>
 		<result column="first_image" property="firstImage"/>
 	</resultMap>
+
+	<resultMap type="bucketDto" id="bucketMap">
+		<result column="concept_no" property="conceptNo"/>
+		<result column="bucket_no" property="bucketNo"/>
+		<result column="content_id" property="contentId"/>
+		<result column="bucket_deadline" property="bucketDeadline"/>
+		<result column="bucket_is_done" property="bucketIsDone"/>
+	</resultMap>
 	
 	<select id="selectCntByConceptNo" parameterType="int" resultType="int">
 		select count(*) from buckets 
@@ -46,4 +54,34 @@
 		values(#{contentId},#{conceptNo},#{bucketDeadline},#{bucketIsDone})
 	</insert>
 	
+	<select id="selectByBucketNo" parameterType="int" resultMap="bucketMap">
+		select * from buckets 
+		where bucket_no=#{bucketNo}
+	</select>
+	
+	<select id="selectBucketUserId" parameterType="int" resultType="string">
+		select c.user_id 
+		from buckets b
+		join concepts c 
+		on b.concept_no=c.concept_no 
+		and b.bucket_no=#{bucketNo}
+	</select>
+	
+	<select id="deleteByBucketNo" parameterType="int">
+		delete from buckets 
+		where bucket_no=#{bucketNo}
+	</select>
+	<update id="updateByBucketNo" parameterType="bucketDto">
+		update buckets
+		<trim prefix="SET" suffixOverrides=",">
+		  <if test="bucketDeadline != null">
+	        	bucket_deadline = #{bucketDeadline},
+	      </if>
+	      <if test="bucketIsDone != null">
+	        	bucket_is_done = #{bucketIsDone},
+	      </if>
+		</trim>
+		where bucket_no=#{bucketNo}
+	</update>
+
 </mapper>
