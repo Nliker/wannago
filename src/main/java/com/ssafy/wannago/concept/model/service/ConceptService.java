@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.wannago.bucket.model.BucketDto;
+import com.ssafy.wannago.bucket.model.BucketResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDetailResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDto;
 import com.ssafy.wannago.concept.model.ConceptResponseDto;
@@ -23,4 +25,7 @@ public interface ConceptService {
 
 	void deleteConcept(String userId, int conceptNo) throws Exception;
 
+	List<BucketResponseDto> getBucketList(String userId, int conceptNo) throws Exception;
+
+	void createBucket(String userId, int conceptNo,BucketDto bucket) throws Exception;
 }

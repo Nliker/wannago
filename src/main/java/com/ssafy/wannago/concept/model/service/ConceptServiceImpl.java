@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.wannago.bucket.model.BucketDto;
+import com.ssafy.wannago.bucket.model.BucketJoinAttractionDto;
+import com.ssafy.wannago.bucket.model.BucketResponseDto;
 import com.ssafy.wannago.bucket.model.mapper.BucketMapper;
 import com.ssafy.wannago.concept.model.ConceptDetailResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDto;
@@ -189,8 +192,7 @@ public class ConceptServiceImpl implements ConceptService{
 		log.debug(param.toString());
 		List<MediaResponseDto> mediaList=new ArrayList<>();
 		for(MediaDto media:mediaMapper.selectByConceptNo(param)) {
-			MediaResponseDto mediaReponse=new MediaResponseDto(media.getMediaNo(),media.getMediaType());
-			mediaList.add(mediaReponse);
+			mediaList.add(new MediaResponseDto(media.getMediaNo(),media.getMediaType()));
 		}
 		
 		return mediaList;
@@ -224,6 +226,38 @@ public class ConceptServiceImpl implements ConceptService{
 		mediaMapper.deleteByConceptNo(conceptNo);
 		conceptMapper.deleteByConceptNo(conceptNo);
 		
+	}
+
+	@Override
+	public List<BucketResponseDto> getBucketList(String userId, int conceptNo) throws Exception {
+		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
+		if(concept==null) {
+			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
+		}
+		if(!concept.getUserId().equals(userId)) {
+			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
+		}
+		List<BucketResponseDto> bucketResponseList=new ArrayList<>();
+		log.debug(bucketMapper.selectByConceptNo(conceptNo).toString());
+		for(BucketJoinAttractionDto bucket:bucketMapper.selectByConceptNo(conceptNo)) {
+			log.debug(bucket.toString());
+			bucketResponseList.add(new BucketResponseDto(bucket));
+		}
+		
+		return bucketResponseList;
+	}
+
+	@Override
+	public void createBucket(String userId, int conceptNo,BucketDto bucket) throws Exception {
+		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
+		if(concept==null) {
+			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
+		}
+		if(!concept.getUserId().equals(userId)) {
+			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
+		}
+		bucket.setConceptNo(conceptNo);
+		bucketMapper.insertBucket(bucket);
 	}
 }
 
