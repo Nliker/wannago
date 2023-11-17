@@ -10,7 +10,6 @@ public class ConceptDetailResponseDto extends ConceptResponseDto{
 	//설명과 공유된 수 추가
 	private String conceptDescription;
 	private int conceptSharedCnt;
-	private List<String> mediaList;
 	
 
 	public ConceptDetailResponseDto(ConceptDto concept) {//set meta datas later

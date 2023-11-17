@@ -20,8 +20,17 @@
 		order by RAND() LIMIT 1;
 	</select>
 	
-	<select id="selectByConceptNo" parameterType="int" resultMap="mediaMap">
+	<select id="selectByConceptNo" parameterType="map" resultMap="mediaMap">
 		select * from concept_medias 
+		where concept_no=#{conceptNo}
+		<if test='type !=null and !"all".equals(type)'>
+			and media_type=#{type}
+		</if>
+		limit #{start},#{size}
+	</select>
+	
+	<select id="selectAllByConceptNo" parameterType="int" resultMap="mediaMap">
+		select * from concept_medias
 		where concept_no=#{conceptNo}
 	</select>
 	

@@ -53,9 +53,9 @@ public class ConceptController {
 	}
 	
 	@GetMapping("/{conceptNo}/medias")
-	public ResponseEntity<Map<String,List<MediaResponseDto>>> conceptMedias(Authentication authentication,@PathVariable int conceptNo) throws Exception{
+	public ResponseEntity<Map<String,List<MediaResponseDto>>> conceptMedias(Authentication authentication,@PathVariable int conceptNo,@RequestParam Map<String, String> map) throws Exception{
 		Map<String,List<MediaResponseDto>> result=new HashMap<>();
-		result.put("mediaInfoList",conceptService.getConceptMediaList(authentication.getName(),conceptNo));
+		result.put("mediaInfoList",conceptService.getConceptMediaList(authentication.getName(),conceptNo,map));
 		return ResponseEntity.ok().body(result);
 	}
 	
