@@ -3,6 +3,17 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.wannago.bucket.model.mapper.BucketMapper">
+	<resultMap type="bucketJoinAttractionDto" id="bucketJoinAttractionMap">
+		<result column="concept_no" property="conceptNo"/>
+		<result column="bucket_no" property="bucketNo"/>
+		<result column="content_id" property="contentId"/>
+		<result column="bucket_deadline" property="bucketDeadline"/>
+		<result column="bucket_is_done" property="bucketIsDone"/>
+		<result column="title" property="title"/>
+		<result column="addr1" property="addr"/>
+		<result column="first_image" property="firstImage"/>
+	</resultMap>
+	
 	<select id="selectCntByConceptNo" parameterType="int" resultType="int">
 		select count(*) from buckets 
 		where concept_no=#{conceptNo}
@@ -13,5 +24,26 @@
 		where concept_no=#{conceptNo} and
 		bucket_is_done=1;
 	</select>
+	
+	<select id="selectByConceptNo" parameterType="int" resultMap="bucketJoinAttractionMap">
+		select 
+			b.concept_no,
+			b.bucket_no,
+			b.bucket_deadline,
+			b.bucket_is_done,
+			a.content_id,
+			a.title,
+			a.addr1,
+			a.first_image 
+		from buckets b
+		join attractions a 
+		on b.content_id=a.content_id
+		and b.concept_no=#{conceptNo}
+	</select>
+	
+	<insert id="insertBucket" parameterType="bucketDto">
+		insert into buckets(content_id,concept_no,bucket_deadline,bucket_is_done) 
+		values(#{contentId},#{conceptNo},#{bucketDeadline},#{bucketIsDone})
+	</insert>
 	
 </mapper>
