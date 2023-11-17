@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService{
 		if(!check) {
 			throw new CredentialException(CredentialErrorCode.NotMatchIdPassword.getCode(),CredentialErrorCode.NotMatchIdPassword.getDescription());
 		}
+		user.setUserName(loginUser.getUserName());
 		return createToken(loginUser);
 	}
 	

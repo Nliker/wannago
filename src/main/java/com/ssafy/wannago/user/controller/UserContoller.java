@@ -32,6 +32,7 @@ public class UserContoller {
 		Map<String,String> result=new HashMap<>();
 		log.debug(token);
 		result.put("access_token",token);
+		result.put("userName",user.getUserName());
 		return ResponseEntity.ok().body(result);
 	}
 	
