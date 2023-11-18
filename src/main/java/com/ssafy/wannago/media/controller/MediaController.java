@@ -1,6 +1,7 @@
 package com.ssafy.wannago.media.controller;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,7 +9,9 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -16,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,11 +41,9 @@ public class MediaController {
 	
 	@Value("${file.path}")
 	private String uploadPath;
-	
-	
+
 	@GetMapping("/{mediaNo}")
 	public ResponseEntity<Object> media(Authentication authentication,@PathVariable int mediaNo) throws Exception{
-		
 		log.debug("Get Medias/No");
 		MediaDto media=mediaService.getMedia(mediaNo,authentication.getName());
 		String file = uploadPath +File.separator+ media.getSavePath();

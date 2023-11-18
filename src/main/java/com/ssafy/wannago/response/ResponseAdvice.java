@@ -3,6 +3,7 @@ package com.ssafy.wannago.response;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
