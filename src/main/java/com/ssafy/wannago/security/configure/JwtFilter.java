@@ -63,6 +63,10 @@ public class JwtFilter extends OncePerRequestFilter{
 		if(StringUtils.hasText(authToken)) {
 			return Optional.of(authToken);
 		}else {
+			authToken=request.getParameter(AUTHORIZATION_HEADER);
+			if(StringUtils.hasText(authToken)) {
+				return Optional.of(authToken);
+			}
 			return Optional.empty();
 		}
 	}

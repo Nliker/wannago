@@ -5,18 +5,24 @@ import lombok.Setter;
 
 @Getter @Setter
 public class UserResponseDto {
-	private String userEmail;
+	private String userId;
 	private String userName;
 	private String userRole;
+	private String userEmailId;
+	private String userEmailDomain;
 	
 	public UserResponseDto(UserDto user) {
-		this.userEmail=user.getUserEmailId()+"@"+user.getUserEmailDomain();
+		this.userEmailId=user.getUserEmailId();
+		this.userEmailDomain=user.getUserEmailDomain();
 		this.userName=user.getUserName();
 		this.userRole=user.getUserRole();
+		this.userId=user.getUserId();
 	}
 
 	@Override
 	public String toString() {
-		return "UserResponseDto [userEmail=" + userEmail + ", userName=" + userName + ", userRole=" + userRole + "]";
+		return "UserResponseDto [userId=" + userId + ", userName=" + userName + ", userRole=" + userRole
+				+ ", userEmailId=" + userEmailId + ", userEmailDomain=" + userEmailDomain + "]";
 	}
+
 }
