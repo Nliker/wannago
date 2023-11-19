@@ -121,10 +121,20 @@ public class ConceptServiceImpl implements ConceptService{
 
 
 	@Override
-	public List<ConceptResponseDto> getConceptList(String userId) throws Exception {
+	public List<ConceptResponseDto> getConceptList(String userId,Map<String, String> map) throws Exception {
 		log.info("class:=================getConceptList====================");
-		List<ConceptDto> conceptList=conceptMapper.selectByUserId(userId);
+		
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("start",map.get("start")==null?0:Integer.parseInt(map.get("start")));
+		param.put("size",map.get("size")==null?conceptMediaListSize:Integer.parseInt(map.get("size")));
+		param.put("orderby", map.get("orderby")==null?"latest":map.get("orderby"));
+		param.put("userId", userId);
+		log.debug(param.toString());
+
+		List<ConceptDto> conceptList=conceptMapper.selectByUserId(param);
 		List<ConceptResponseDto> conceptResponseList=new ArrayList<>();
+		
 		for(ConceptDto concept:conceptList) {
 			ConceptResponseDto conceptResponseDto=new ConceptResponseDto(concept);
 			setConceptMetaData(conceptResponseDto);

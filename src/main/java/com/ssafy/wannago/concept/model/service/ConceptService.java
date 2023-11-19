@@ -15,7 +15,7 @@ import com.ssafy.wannago.media.model.MediaResponseDto;
 public interface ConceptService {
 	ConceptResponseDto createConcept(String userId, ConceptDto concept, MultipartFile[] medias) throws Exception;
 
-	List<ConceptResponseDto> getConceptList(String userId) throws Exception;
+	List<ConceptResponseDto> getConceptList(String userId,Map<String, String> map) throws Exception;
 
 	ConceptDetailResponseDto getConcept(String userId, int conceptNo) throws Exception;
 

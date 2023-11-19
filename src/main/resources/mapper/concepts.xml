@@ -36,9 +36,18 @@
 		where concept_no=#{conceptNo}
 	</select>
 	
-	<select id="selectByUserId" parameterType="String" resultMap="conceptMap">
+	<select id="selectByUserId" parameterType="map" resultMap="conceptMap">
 		select * from concepts
-		where user_id=#{user_id}
+		where user_id=#{userId} 
+		<choose>
+			<when test='orderby==null or !"old".equals(orderby)'>
+				order by concept_reg_date desc 
+			</when>
+			<otherwise>
+				order by concept_reg_date asc 
+			</otherwise>
+		</choose>
+		limit #{start},#{size}
 	</select>
 	
 	<delete id="deleteByConceptNo" parameterType="int">
