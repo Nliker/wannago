@@ -10,6 +10,7 @@
 		<result column="concept_shared_cnt" property="conceptSharedCnt"/>
 		<result column="user_id" property="userId"/>
 		<result column="user_name" property="userName"/>
+		<result column="concept_reg_date" property="conceptRegDate"/>
 	</resultMap>
 
 	<insert id="insertConcept" parameterType="conceptDto" >

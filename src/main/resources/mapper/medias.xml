@@ -11,6 +11,7 @@
 		<result column="media_origin_file" property="mediaOriginFile"/>
 		<result column="media_save_file" property="mediaSaveFile"/>
 		<result column="media_type" property="mediaType"/>
+		<result column="media_reg_date" property="mediaRegDate"/>
 	</resultMap>
 	
 	

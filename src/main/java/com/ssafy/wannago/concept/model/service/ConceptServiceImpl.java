@@ -162,14 +162,14 @@ public class ConceptServiceImpl implements ConceptService{
 		if (conceptResponseDto instanceof ConceptDetailResponseDto) {
 			List<MediaResponseDto> mediaList=new ArrayList<>();
 			for(MediaDto media:mediaMapper.selectAllByConceptNo(conceptNo)) {
-				MediaResponseDto mediaReponse=new MediaResponseDto(media.getMediaNo(),media.getMediaType());
+				MediaResponseDto mediaReponse=new MediaResponseDto(media.getMediaNo(),media.getMediaType(),media.getMediaRegDate());
 				mediaList.add(mediaReponse);
 			}
 			((ConceptDetailResponseDto)conceptResponseDto).setMediaInfoList(mediaList);
 		}else {
 			MediaDto RandomMedia=mediaMapper.selectRandomOneByConceptNo(conceptNo);
 			MediaResponseDto mediaReponse= (RandomMedia==null)?
-					new MediaResponseDto(0,"raw"):new MediaResponseDto(RandomMedia.getMediaNo(),RandomMedia.getMediaType());
+					new MediaResponseDto(0,"raw",(new Date()).toString()):new MediaResponseDto(RandomMedia.getMediaNo(),RandomMedia.getMediaType(),RandomMedia.getMediaRegDate());
 			conceptResponseDto.setMediaInfoList(Arrays.asList(mediaReponse));
 		}
 	}
@@ -192,7 +192,7 @@ public class ConceptServiceImpl implements ConceptService{
 		log.debug(param.toString());
 		List<MediaResponseDto> mediaList=new ArrayList<>();
 		for(MediaDto media:mediaMapper.selectByConceptNo(param)) {
-			mediaList.add(new MediaResponseDto(media.getMediaNo(),media.getMediaType()));
+			mediaList.add(new MediaResponseDto(media.getMediaNo(),media.getMediaType(),media.getMediaRegDate()));
 		}
 		
 		return mediaList;

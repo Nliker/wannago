@@ -43,7 +43,7 @@ public class ConceptController {
 	}
 	
 	@GetMapping("")
-	public ResponseEntity<Map<String,List<ConceptResponseDto>>> concept(Authentication authentication) throws Exception{
+	public ResponseEntity<Map<String,List<ConceptResponseDto>>> concept(Authentication authentication,@RequestParam Map<String, String> map) throws Exception{
 		Map<String,List<ConceptResponseDto>> result=new HashMap<>();
 		result.put("conceptInfoList",conceptService.getConceptList(authentication.getName()));
 		return ResponseEntity.ok().body(result);

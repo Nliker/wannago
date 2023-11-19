@@ -16,20 +16,23 @@ public class ConceptResponseDto {
 	private List<MediaResponseDto> mediaInfoList;
 	private int bucketTotalCnt;
 	private int bucketDoneCnt;
+	private String conceptRegDate;
 	
 
 	
 	public ConceptResponseDto(ConceptDto concept) {
 		this.conceptNo=concept.getConceptNo();
 		this.conceptTitle=concept.getConceptTitle();
+		this.conceptRegDate=concept.getConceptRegDate();
 	}
 
 
 
 	@Override
 	public String toString() {
-		return "ConceptResponseDto [conceptNo=" + conceptNo + ", conceptTitle=" + conceptTitle + ", mediaResponseList="
-				+ mediaInfoList + ", bucketTotalCnt=" + bucketTotalCnt + ", bucketDoneCnt=" + bucketDoneCnt + "]";
+		return "ConceptResponseDto [conceptNo=" + conceptNo + ", conceptTitle=" + conceptTitle + ", mediaInfoList="
+				+ mediaInfoList + ", bucketTotalCnt=" + bucketTotalCnt + ", bucketDoneCnt=" + bucketDoneCnt
+				+ ", conceptRegDate=" + conceptRegDate + "]";
 	}
-	
+
 }

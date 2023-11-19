@@ -15,6 +15,7 @@ public class MediaDto {
 	private String mediaOriginFile;
 	private String mediaSaveFile;
 	private String mediaType;
+	private String mediaRegDate;
 
 	public String getSavePath() {
 		return this.mediaSaveFolder+File.separator+this.mediaSaveFile;
@@ -32,11 +33,11 @@ public class MediaDto {
 	public MediaDto() {
 		super();
 	}
-
 	@Override
 	public String toString() {
 		return "MediaDto [mediaNo=" + mediaNo + ", conceptNo=" + conceptNo + ", mediaSaveFolder=" + mediaSaveFolder
 				+ ", mediaOriginFile=" + mediaOriginFile + ", mediaSaveFile=" + mediaSaveFile + ", mediaType="
-				+ mediaType + "]";
+				+ mediaType + ", mediaRegDate=" + mediaRegDate + "]";
 	}
+	
 }	

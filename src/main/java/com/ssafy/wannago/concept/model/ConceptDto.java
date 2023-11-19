@@ -11,12 +11,14 @@ public class ConceptDto {
 	private int conceptSharedCnt;
 	private String userId;
 	private String userName;
-	
+	private String conceptRegDate;
 	
 	@Override
 	public String toString() {
 		return "ConceptDto [conceptNo=" + conceptNo + ", conceptTitle=" + conceptTitle + ", conceptDescription="
 				+ conceptDescription + ", conceptSharedCnt=" + conceptSharedCnt + ", userId=" + userId + ", userName="
-				+ userName + "]";
+				+ userName + ", conceptRegDate=" + conceptRegDate + "]";
 	}
+	
+	
 }

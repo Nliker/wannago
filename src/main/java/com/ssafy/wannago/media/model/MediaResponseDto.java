@@ -7,10 +7,12 @@ import lombok.Setter;
 public class MediaResponseDto {
 	private int mediaNo;
 	private String mediaType;
-
-	public MediaResponseDto(int mediaNo, String mediaType) {
+	private String mediaRegDate;
+	
+	public MediaResponseDto(int mediaNo, String mediaType,String mediaRegDate) {
 		super();
 		this.mediaNo = mediaNo;
 		this.mediaType = mediaType;
+		this.mediaRegDate=mediaRegDate;
 	}
 }
