@@ -1,15 +1,12 @@
 package com.ssafy.wannago.concept.model.service;
 
-import java.io.File;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -192,6 +189,14 @@ public class ConceptServiceImpl implements ConceptService{
 		List<MediaDto> mediaList=fileUtil.saveFiles(concept.getConceptNo());
 		if(mediaList.size()!=0) {
 			mediaMapper.insertMediaList(mediaList);
+		}
+		for(MediaDto media:mediaList) {
+			log.debug("media thumb start");
+			if("image".equals(media.getMediaType())) {
+				fileUtil.generateImageThumbnail(media);
+			}else if("video".equals(media.getMediaType())){
+				fileUtil.resizeVideo(media);
+			}
 		}
 	}
 	@Transactional
