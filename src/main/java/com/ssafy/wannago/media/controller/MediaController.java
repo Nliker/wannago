@@ -79,15 +79,18 @@ public class MediaController {
 	public ResponseEntity<Object> mediaThumbnail(Authentication authentication,@PathVariable int mediaNo) throws Exception{
 		log.debug("Get Medias/No/thumbNail");
 		MediaDto media=mediaService.getMedia(mediaNo,authentication.getName());
-		String file = imageThumbPath +File.separator+ media.getSavePath();
+		String mediaSaveName=media.getMediaSaveFile().substring(0,media.getMediaSaveFile().lastIndexOf('.'));
+		String mediaOriginName=media.getMediaOriginFile().substring(0,media.getMediaOriginFile().lastIndexOf('.'));
 		if("video".equals(media.getMediaType())) {
-			file=file.substring(0,file.lastIndexOf('.'))+"."+"png";
+			mediaSaveName=mediaSaveName+"."+"png";
+			mediaOriginName=mediaOriginName+"."+"png";
 		}
+		String file = imageThumbPath +File.separator+media.getMediaSaveFolder()+ File.separator+mediaSaveName;
 		Path filePath = Paths.get(file);
 		Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기
 		log.debug(filePath.toString());
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentDisposition(ContentDisposition.builder("attachment").filename(URLEncoder.encode(media.getMediaOriginFile(), "UTF-8").replaceAll("\\+", "%20")).build());
+		headers.setContentDisposition(ContentDisposition.builder("attachment").filename(URLEncoder.encode(mediaOriginName, "UTF-8").replaceAll("\\+", "%20")).build());
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		return ResponseEntity.ok().headers(headers).body(resource);
 	}
