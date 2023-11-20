@@ -20,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.wannago.media.model.MediaDto;
 
 import io.github.techgnious.IVCompressor;
+import io.github.techgnious.dto.IVAudioAttributes;
+import io.github.techgnious.dto.IVSize;
+import io.github.techgnious.dto.IVVideoAttributes;
 import io.github.techgnious.dto.ResizeResolution;
 import io.github.techgnious.dto.VideoFormats;
 import lombok.extern.slf4j.Slf4j;
@@ -99,7 +102,20 @@ public class FileUtilImpl implements FileUtil{
 		
 		long beforeTime = System.currentTimeMillis(); 
 		log.debug("==========================resize video start=======================");
-        byte[] result=compressor.reduceVideoSize(Files.readAllBytes(saveFile.toPath()), VideoFormats.MP4, ResizeResolution.R480P);
+		
+		
+		IVSize customRes = new IVSize();
+		customRes.setWidth(480);
+		customRes.setHeight(640);
+		IVVideoAttributes videoAttribute = new IVVideoAttributes();
+		videoAttribute.setFrameRate(24);
+		videoAttribute.setSize(customRes);
+	
+//		byte[] result=compressor.reduceVideoSizeWithCustomRes(Files.readAllBytes(saveFile.toPath()),VideoFormats.MP4, customRes);
+//		IVAudioAttributes audioAttribute = new IVAudioAttributes();
+//		byte[] result=compressor.reduceVideoSize(Files.readAllBytes(saveFile.toPath()), VideoFormats.MP4, ResizeResolution.R480P);
+//      byte[] result=compressor.reduceVideoSizeWithCustomRes(Files.readAllBytes(saveFile.toPath()), VideoFormats.MP4, customRes);
+		byte[] result=compressor.encodeVideoWithAttributes(Files.readAllBytes(saveFile.toPath()), VideoFormats.MP4,null, videoAttribute);
         Files.write(resizeFile.toPath(), result);
         
         long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
@@ -115,6 +131,7 @@ public class FileUtilImpl implements FileUtil{
         String IMAGE_PNG_FORMAT="png";
         String FileName=media.getMediaSaveFile();
 		File thumbnailFile = new File(thumbnailfolder,(FileName.substring(0,FileName.lastIndexOf('.'))+"."+IMAGE_PNG_FORMAT));
+		
 		beforeTime = System.currentTimeMillis(); 
 		log.debug("==========================resize video start=======================");
         generateVideoThumbnail(resizeFile,thumbnailFile,IMAGE_PNG_FORMAT);
