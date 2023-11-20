@@ -79,11 +79,11 @@ public class MediaController {
 	public ResponseEntity<Object> mediaThumbnail(Authentication authentication,@PathVariable int mediaNo) throws Exception{
 		log.debug("Get Medias/No/thumbNail");
 		MediaDto media=mediaService.getMedia(mediaNo,authentication.getName());
-		String mediaSaveName=media.getMediaSaveFile().substring(0,media.getMediaSaveFile().lastIndexOf('.'));
-		String mediaOriginName=media.getMediaOriginFile().substring(0,media.getMediaOriginFile().lastIndexOf('.'));
+		String mediaSaveName=media.getMediaSaveFile();
+		String mediaOriginName=media.getMediaOriginFile();
 		if("video".equals(media.getMediaType())) {
-			mediaSaveName=mediaSaveName+"."+"png";
-			mediaOriginName=mediaOriginName+"."+"png";
+			mediaSaveName=mediaSaveName.substring(0,mediaSaveName.lastIndexOf('.'))+"."+"png";
+			mediaOriginName=mediaOriginName.substring(0,mediaOriginName.lastIndexOf('.'))+"."+"png";
 		}
 		String file = imageThumbPath +File.separator+media.getMediaSaveFolder()+ File.separator+mediaSaveName;
 		Path filePath = Paths.get(file);
