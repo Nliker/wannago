@@ -26,6 +26,8 @@ import com.ssafy.wannago.concept.model.ConceptResponseDto;
 import com.ssafy.wannago.concept.model.mapper.ConceptMapper;
 import com.ssafy.wannago.errorcode.ConceptErrorCode;
 import com.ssafy.wannago.exception.ConceptException;
+import com.ssafy.wannago.file.utils.FileUtil;
+import com.ssafy.wannago.file.utils.FileUtilFactory;
 import com.ssafy.wannago.media.model.MediaDto;
 import com.ssafy.wannago.media.model.MediaResponseDto;
 import com.ssafy.wannago.media.model.mapper.MediaMapper;
@@ -39,20 +41,16 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class ConceptServiceImpl implements ConceptService{
-	
-	@Value("${file.path}")
-	private String uploadPath;
-	
+
 	@Value("${concept.mediaListSize}")
 	private int conceptMediaListSize;
-	
-	@Value("${file.video.extensions}")
-	private String[] videoExtensionList;
-	
+
 	private final ConceptMapper conceptMapper;
 	private final UserMapper userMapper;
 	private final MediaMapper mediaMapper;
 	private final BucketMapper bucketMapper;
+	
+	private final FileUtilFactory fileUtilFactory;
 	
 	@Transactional
 	@Override
@@ -64,60 +62,28 @@ public class ConceptServiceImpl implements ConceptService{
 		concept.setUserName(user.getUserName());
 		conceptMapper.insertConcept(concept);	
 		
-		List<MediaDto> mediaList=saveFile(files,concept.getConceptNo());
+		FileUtil fileUtil=fileUtilFactory.getInstance(files);
+		List<MediaDto> mediaList=fileUtil.saveFiles(concept.getConceptNo());
+		
+		
+		log.debug("media List insert start");
+		
 		if(mediaList.size()!=0) {
 			mediaMapper.insertMediaList(mediaList);
+		}
+		for(MediaDto media:mediaList) {
+			log.debug("media thumb start");
+			fileUtil.generateImageThumbnail(media);
 		}
 		
 		ConceptResponseDto conceptResponseDto=new ConceptResponseDto(concept);
 		log.info("conceptResponseDto"+conceptResponseDto.toString());
 		setConceptMetaData(conceptResponseDto);
 		
+		
 		return conceptResponseDto;
 	}
 	
-	private List<MediaDto> saveFile(MultipartFile[] files,int conceptNo) throws Exception {
-        long beforeTime = System.currentTimeMillis(); 
-        log.debug("start time:"+beforeTime);
-        long fileSize=0;
-        List<MediaDto> mediaList=new ArrayList<>();
-        for(MultipartFile file:files) {
-            if(file.isEmpty()) {
-                continue;
-            }
-            String originalFileName = file.getOriginalFilename();
-            if(originalFileName.isEmpty()) {
-                continue;
-            }
-            String today = new SimpleDateFormat("yyMMdd").format(new Date());
-            String saveFolder = uploadPath + File.separator + today;
-            File folder = new File(saveFolder);
-            if (!folder.exists())
-                folder.mkdirs();
-            String extension=originalFileName.substring(originalFileName.lastIndexOf('.')+1).toLowerCase();
-            String saveFileName = UUID.randomUUID().toString()
-                    +"."+extension;
-            file.transferTo(new File(folder, saveFileName));
-            String mediaType= isVideo(extension)? "video" : "raw";
-            mediaList.add(new MediaDto(conceptNo,today,originalFileName,saveFileName,mediaType));
-            fileSize+=file.getSize();
-        }
-        log.debug("total saved size"+fileSize);
-        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-        log.debug("end time:"+afterTime);
-        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
-        log.debug("시간차이(m) : "+secDiffTime);
-        
-        return mediaList;
-    }
-	private boolean isVideo(String extension) {
-		for(String videoExtension:videoExtensionList) {
-			if(videoExtension.equals(extension)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 
 	@Override
@@ -218,7 +184,8 @@ public class ConceptServiceImpl implements ConceptService{
 			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
 		}
 		
-		List<MediaDto> mediaList=saveFile(files,concept.getConceptNo());
+		FileUtil fileUtil=fileUtilFactory.getInstance(files);
+		List<MediaDto> mediaList=fileUtil.saveFiles(concept.getConceptNo());
 		if(mediaList.size()!=0) {
 			mediaMapper.insertMediaList(mediaList);
 		}

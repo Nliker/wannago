@@ -35,7 +35,7 @@ public class ConceptController {
 	private final ConceptService conceptService;
 	
 	@PostMapping("")
-	public ResponseEntity<Map<String,ConceptResponseDto>> concept(Authentication authentication,ConceptDto concept,@RequestParam("upfile") MultipartFile[] files) throws Exception{
+	public ResponseEntity<Map<String,ConceptResponseDto>> concept(Authentication authentication,ConceptDto concept,@RequestParam(value="upfile",required=false) MultipartFile[] files) throws Exception{
 		Map<String,ConceptResponseDto> result=new HashMap<>();
 		result.put("conceptInfo",conceptService.createConcept(authentication.getName(),concept,files));
 	
@@ -64,7 +64,7 @@ public class ConceptController {
 	}
 	
 	@PostMapping("/{conceptNo}/medias")
-	public ResponseEntity<Map<String,String>> conceptMedias(Authentication authentication,@RequestParam("upfile") MultipartFile[] files,@PathVariable int conceptNo) throws Exception{
+	public ResponseEntity<Map<String,String>> conceptMedias(Authentication authentication,@RequestParam(value="upfile",required=false) MultipartFile[] files,@PathVariable int conceptNo) throws Exception{
 		conceptService.addConceptMediaList(authentication.getName(),conceptNo,files);
 		Map<String,String> result=new HashMap<>();
 		result.put("result","successful");
