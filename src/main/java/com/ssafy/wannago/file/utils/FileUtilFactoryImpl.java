@@ -4,10 +4,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.wannago.bucket.model.mapper.BucketMapper;
+import com.ssafy.wannago.concept.model.mapper.ConceptMapper;
+import com.ssafy.wannago.media.model.mapper.MediaMapper;
+import com.ssafy.wannago.user.model.mapper.UserMapper;
+
+import io.github.techgnious.IVCompressor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class FileUtilFactoryImpl implements FileUtilFactory {
 	@Value("${file.path}")
 	private String uploadPath;
@@ -18,7 +26,7 @@ public class FileUtilFactoryImpl implements FileUtilFactory {
 	@Value("${file.image.thumbnail.path}")
 	private String imageThumbPath;
 	
-	@Value("%{file.image.thumbnail.ratio}")
+	@Value("${file.image.thumbnail.ratio}")
 	private int imageThumbRatio;
 	
 	@Override

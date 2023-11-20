@@ -73,7 +73,11 @@ public class ConceptServiceImpl implements ConceptService{
 		}
 		for(MediaDto media:mediaList) {
 			log.debug("media thumb start");
-			fileUtil.generateImageThumbnail(media);
+			if("image".equals(media.getMediaType())) {
+				fileUtil.generateImageThumbnail(media);
+			}else if("video".equals(media.getMediaType())){
+				fileUtil.resizeVideo(media);
+			}
 		}
 		
 		ConceptResponseDto conceptResponseDto=new ConceptResponseDto(concept);

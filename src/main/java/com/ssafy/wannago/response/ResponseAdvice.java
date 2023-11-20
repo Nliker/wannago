@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.HttpRange;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -38,7 +40,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         
         log.debug("body class: "+body.getClass().toString());
         log.debug("body: "+body);
-        if(body instanceof Resource) {
+        if(body instanceof Resource || body instanceof HttpRange) {
         	return body;
         }else if (body instanceof CustomException) {//실패한 반환
         	CustomException Ce=(CustomException)body;
