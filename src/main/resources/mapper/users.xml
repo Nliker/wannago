@@ -30,4 +30,10 @@
 		insert users(user_id,user_name,user_password,user_email_id,user_email_domain,user_role)
 		values(#{userId},#{userName},#{userPassword},#{userEmailId},#{userEmailDomain},#{userRole})
 	</insert>
+	
+	<update id="updateUserPassword" parameterType="map">
+		update users
+		set user_password=#{password}
+		where user_id=#{userId}
+	</update>
 </mapper>

@@ -28,4 +28,6 @@ public interface ConceptService {
 	List<BucketResponseDto> getBucketList(String userId, int conceptNo) throws Exception;
 
 	void createBucket(String userId, int conceptNo,BucketDto bucket) throws Exception;
+
+	void updateConcept(String userId,int conceptNo, ConceptDto concept) throws Exception;
 }

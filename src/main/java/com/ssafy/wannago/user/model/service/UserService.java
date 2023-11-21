@@ -15,4 +15,5 @@ public interface UserService {
 	String createToken(UserDto user) throws Exception;
 	void createUser(UserDto user) throws Exception;
 	UserResponseDto getUserInfo(String userId) throws Exception;
+	void updateUserInfo(String userId,String password) throws Exception;
 }

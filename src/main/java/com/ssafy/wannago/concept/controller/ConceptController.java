@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,15 @@ public class ConceptController {
 		Map<String,ConceptResponseDto> result=new HashMap<>();
 		result.put("conceptInfo",conceptService.createConcept(authentication.getName(),concept,files));
 	
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@PutMapping("/{conceptNo}")
+	public ResponseEntity<Map<String,String>> updateConcept(Authentication authentication,@RequestBody ConceptDto concept,@PathVariable int conceptNo) throws Exception{
+		log.debug(concept.toString());
+		conceptService.updateConcept(authentication.getName(),conceptNo,concept);
+		Map<String,String> result=new HashMap<>();
+		result.put("result","successful");
 		return ResponseEntity.ok().body(result);
 	}
 	

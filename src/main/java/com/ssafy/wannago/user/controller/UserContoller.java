@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +53,16 @@ public class UserContoller {
 		UserResponseDto user=userService.getUserInfo(authentication.getName());		
 		Map<String,UserResponseDto> result=new HashMap<>();
 		result.put("userInfo",user);
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@PutMapping("/mypassword")
+	public ResponseEntity<Map<String,String>> updateMy(Authentication authentication,@RequestBody Map<String, String> passwordMap) throws Exception{
+		log.debug("/UpdateMy");
+		log.debug(authentication.getName());
+		userService.updateUserInfo(authentication.getName(),passwordMap.get("password"));		
+		Map<String,String> result=new HashMap<>();
+		result.put("result","successful");
 		return ResponseEntity.ok().body(result);
 	}
 }

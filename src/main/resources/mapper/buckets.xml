@@ -34,7 +34,7 @@
 	<select id="selectDoneCntByConceptNo" parameterType="int" resultType="int">
 		select count(*) from buckets 
 		where concept_no=#{conceptNo} 
-		and bucket_is_done=1;
+		and bucket_is_done=1
 		<include refid="notDeleted"></include>
 	</select>
 	
@@ -72,13 +72,13 @@
 		join concepts c 
 		on b.concept_no=c.concept_no 
 		and b.bucket_no=#{bucketNo}
-		and b.bucket_deleted=0;
+		and b.bucket_deleted=0
 	</select>
 	
 	<update id="deleteByBucketNo" parameterType="int">
 		update from buckets 
 		where bucket_no=#{bucketNo}
-		set bucket_deleted=1;
+		set bucket_deleted=1
 	</update>
 	
 	<update id="updateByBucketNo" parameterType="bucketDto">

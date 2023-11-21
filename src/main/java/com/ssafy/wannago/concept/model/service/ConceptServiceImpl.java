@@ -245,5 +245,22 @@ public class ConceptServiceImpl implements ConceptService{
 		bucket.setConceptNo(conceptNo);
 		bucketMapper.insertBucket(bucket);
 	}
+
+
+
+	@Override
+	public void updateConcept(String userId, int conceptNo,ConceptDto updateConcept) throws Exception{
+		log.info("class:=================updateConcept====================");
+		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
+		if(concept==null) {
+			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
+		}
+		if(!concept.getUserId().equals(userId)) {
+			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
+		}
+		updateConcept.setConceptNo(conceptNo);
+		log.debug(updateConcept.toString());
+		conceptMapper.updateConcept(updateConcept);
+	}
 }
 

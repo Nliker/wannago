@@ -172,5 +172,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserResponseDto getUserInfo(String userId) throws Exception{
 		return new UserResponseDto(userMapper.selectByUserId(userId));
+	}
+
+	@Override
+	public void updateUserInfo(String userId, String password) throws Exception {
+		log.debug("password: "+password.toString());
+		userMapper.updateUserPassword(userId, passwordEncoder.encode(password));
 	}	
 }

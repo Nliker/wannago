@@ -54,4 +54,10 @@
 		delete from concepts 
 		where concept_no=#{conceptNo}
 	</delete>
+	<update id="updateConcept" parameterType="conceptDto">
+		update concepts
+		set concept_title=#{conceptTitle},
+		concept_description=#{conceptDescription}
+		where concept_no=#{conceptNo}
+	</update>
 </mapper>
