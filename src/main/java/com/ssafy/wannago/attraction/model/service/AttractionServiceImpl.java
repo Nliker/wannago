@@ -31,11 +31,14 @@ public class AttractionServiceImpl implements AttractionService{
 		param.put("neLon",new BigDecimal(map.get("neLon")));
 		param.put("swLat",new BigDecimal(map.get("swLat")));
 		param.put("swLon",new BigDecimal(map.get("swLon")));
-		if(map.get("sidoCode")!=null) {
-			param.put("sidoCode",Integer.parseInt(map.get("sidoCode")));
+		if(map.get("sidoCode")==null) {
+			throw new Exception("응 아니야~");
 		}
+		param.put("sidoCode",Integer.parseInt(map.get("sidoCode")));
 		param.put("title",map.get("title"));
+		
 		log.debug(param.toString());
+		
 		List<AttractionResponseDto> attractionList=new ArrayList<>();
 		for(AttractionJoinDescriptionDto attraction:attractionMapper.selectByParam(param)) {
 			attractionList.add(new AttractionResponseDto(attraction));

@@ -27,7 +27,12 @@
 		from attractions a
 		join attraction_description a_d 
 		on a.content_id=a_d.content_id
-		where sido_code = #{sidoCode} limit 100;
+		where sido_code = #{sidoCode}
+		and (a.latitude between #{swLat} and #{neLat})
+		and (a.longitude between #{swLon} and #{neLon})
+		<if test='title != null and !"".equals(title)'>
+			and match(title) against(#{title} in natural language mode);
+		</if>
 	</select>
 
 </mapper>

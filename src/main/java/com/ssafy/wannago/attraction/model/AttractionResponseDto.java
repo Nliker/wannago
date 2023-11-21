@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class AttractionResponseDto {
-	private int content_id;
+	private int contentId;
 	private String title;
 	private String address;
 	private String image;
@@ -17,7 +17,7 @@ public class AttractionResponseDto {
 	private String description;
 	
 	public AttractionResponseDto(AttractionJoinDescriptionDto attraction) {
-		this.content_id=attraction.getContentId();
+		this.contentId=attraction.getContentId();
 		this.address=attraction.getAddr1();
 		this.image=attraction.getFirstImage();
 		this.readCount=attraction.getReadCount();
@@ -29,11 +29,9 @@ public class AttractionResponseDto {
 
 	@Override
 	public String toString() {
-		return "AttractionResponseDto [content_id=" + content_id + ", title=" + title + ", address=" + address
+		return "AttractionResponseDto [contentId=" + contentId + ", title=" + title + ", address=" + address
 				+ ", image=" + image + ", readCount=" + readCount + ", latitude=" + latitude + ", longitude="
 				+ longitude + ", description=" + description + "]";
 	}
-
-	
 	
 }
