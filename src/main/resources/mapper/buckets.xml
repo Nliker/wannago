@@ -3,6 +3,9 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.wannago.bucket.model.mapper.BucketMapper">
+	<sql id="notDeleted">
+		and bucket_deleted=0
+    </sql>
 	<resultMap type="bucketJoinAttractionDto" id="bucketJoinAttractionMap">
 		<result column="concept_no" property="conceptNo"/>
 		<result column="bucket_no" property="bucketNo"/>
@@ -25,12 +28,14 @@
 	<select id="selectCntByConceptNo" parameterType="int" resultType="int">
 		select count(*) from buckets 
 		where concept_no=#{conceptNo}
+		<include refid="notDeleted"></include>
 	</select>
 	
 	<select id="selectDoneCntByConceptNo" parameterType="int" resultType="int">
 		select count(*) from buckets 
-		where concept_no=#{conceptNo} and
-		bucket_is_done=1;
+		where concept_no=#{conceptNo} 
+		and bucket_is_done=1;
+		<include refid="notDeleted"></include>
 	</select>
 	
 	<select id="selectByConceptNo" parameterType="int" resultMap="bucketJoinAttractionMap">
@@ -47,6 +52,7 @@
 		join attractions a 
 		on b.content_id=a.content_id
 		and b.concept_no=#{conceptNo}
+		<include refid="notDeleted"></include>
 	</select>
 	
 	<insert id="insertBucket" parameterType="bucketDto">
@@ -57,6 +63,7 @@
 	<select id="selectByBucketNo" parameterType="int" resultMap="bucketMap">
 		select * from buckets 
 		where bucket_no=#{bucketNo}
+		<include refid="notDeleted"></include>
 	</select>
 	
 	<select id="selectBucketUserId" parameterType="int" resultType="string">
@@ -65,12 +72,15 @@
 		join concepts c 
 		on b.concept_no=c.concept_no 
 		and b.bucket_no=#{bucketNo}
+		and b.bucket_deleted=0;
 	</select>
 	
-	<select id="deleteByBucketNo" parameterType="int">
-		delete from buckets 
+	<update id="deleteByBucketNo" parameterType="int">
+		update from buckets 
 		where bucket_no=#{bucketNo}
-	</select>
+		set bucket_deleted=1;
+	</update>
+	
 	<update id="updateByBucketNo" parameterType="bucketDto">
 		update buckets
 		<trim prefix="SET" suffixOverrides=",">
@@ -82,6 +92,7 @@
 	      </if>
 		</trim>
 		where bucket_no=#{bucketNo}
+		<include refid="notDeleted"></include>
 	</update>
 
 </mapper>
