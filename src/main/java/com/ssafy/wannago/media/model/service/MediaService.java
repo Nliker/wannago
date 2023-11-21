@@ -1,9 +1,10 @@
 package com.ssafy.wannago.media.model.service;
 
-import com.ssafy.wannago.media.model.MediaDto;
+import org.springframework.http.ResponseEntity;
 
 public interface MediaService {
-	MediaDto getMedia(int mediaNo,String userId) throws Exception;
-
+	ResponseEntity<Object> sendMedia(int mediaNo,String userId) throws Exception;
+	ResponseEntity<Object> sendMediaThumbnail(int mediaNo,String userId) throws Exception;
+	ResponseEntity<Object> sendResizeVideo(int mediaNo,String userId) throws Exception;
 	void deleteMedia(int mediaNo,String userId) throws Exception;
 }

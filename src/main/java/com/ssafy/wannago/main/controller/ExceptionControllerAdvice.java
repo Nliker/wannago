@@ -10,6 +10,7 @@ import com.ssafy.wannago.exception.BucketException;
 import com.ssafy.wannago.exception.ConceptException;
 import com.ssafy.wannago.exception.CredentialException;
 import com.ssafy.wannago.exception.CustomException;
+import com.ssafy.wannago.exception.FileException;
 import com.ssafy.wannago.exception.JwtException;
 import com.ssafy.wannago.exception.MediaException;
 
@@ -66,6 +67,15 @@ public class ExceptionControllerAdvice {
 	
 	@ExceptionHandler(BucketException.class)
 	public ResponseEntity<CustomException> handleBucketException(CustomException e, Model model) {
+		log.debug("Exception type:"+e.getClass());
+		log.error("Exception 발생 : {}",e.getCode());
+		log.error("Exception 발생 : {}",e.getMsg());
+		
+		return ResponseEntity.status(e.getCode()).body(e);
+	}
+	
+	@ExceptionHandler(FileException.class)
+	public ResponseEntity<CustomException> handleFileException(CustomException e, Model model) {
 		log.debug("Exception type:"+e.getClass());
 		log.error("Exception 발생 : {}",e.getCode());
 		log.error("Exception 발생 : {}",e.getMsg());

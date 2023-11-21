@@ -20,6 +20,13 @@ public class MediaDto {
 	public String getSavePath() {
 		return this.mediaSaveFolder+File.separator+this.mediaSaveFile;
 	}
+	
+	public String getFileNameWithoutExtension() {
+		return this.mediaSaveFile.substring(0,this.mediaSaveFile.lastIndexOf('.'));
+	}
+	public String getOriginFileNameWithoutExtension() {
+		return this.mediaOriginFile.substring(0,this.mediaOriginFile.lastIndexOf('.'));
+	}
 	public MediaDto(int conceptNo, String mediaSaveFolder, String mediaOriginFile, String mediaSaveFile,
 			String mediaType) {
 		super();

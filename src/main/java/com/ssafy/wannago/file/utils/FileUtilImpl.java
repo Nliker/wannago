@@ -37,19 +37,21 @@ public class FileUtilImpl implements FileUtil{
 	private String videoResizePath;
 	private String imageThumbPath;
 	private int imageThumbRatio;
+	private String thumbnailImageFormat;
 	
-	public FileUtilImpl(MultipartFile[] files,String uploadPath,String videoResizePath,String imageThumbPath,int imageThumbRatio) {
+	public FileUtilImpl(MultipartFile[] files,String uploadPath,String videoResizePath,String imageThumbPath,int imageThumbRatio,String thumbnailImageFormat) {
 		this.files=files;
 		this.uploadPath=uploadPath;
 		this.videoResizePath=videoResizePath;
 		this.imageThumbPath=imageThumbPath;
 		this.imageThumbRatio=imageThumbRatio;
+		this.thumbnailImageFormat=thumbnailImageFormat;
 	}
 	
 	@Override
 	public List<MediaDto> saveFiles(int conceptNo) throws Exception {
+		log.debug("===================save files start===========================");
 		long beforeTime = System.currentTimeMillis(); 
-        log.debug("start time:"+beforeTime);
         long fileSize=0;
         List<MediaDto> mediaList=new ArrayList<>();
         for(MultipartFile file:files) {
@@ -57,102 +59,91 @@ public class FileUtilImpl implements FileUtil{
                 continue;
             }
             String originalFileName = file.getOriginalFilename();
+            
             if(originalFileName.isEmpty()) {
                 continue;
             }
+            
             String mediaType=file.getContentType().split("/")[0];
             log.debug("file mime type:"+mediaType);
+            
             if(!("video".equals(mediaType)) && !("image".equals(mediaType))) {
             	continue;
             }
-            String today = new SimpleDateFormat("yyMMdd").format(new Date());
-            String saveFolder = this.uploadPath + File.separator + today;
-            File folder = new File(saveFolder);
+            
+            String today = new SimpleDateFormat("yyMMdd").format(new Date()); 
+            File folder = new File(this.uploadPath + File.separator + today);
+            
             if (!folder.exists())
                 folder.mkdirs();
+            
             String extension=originalFileName.substring(originalFileName.lastIndexOf('.')+1).toLowerCase();
             String saveFileName = UUID.randomUUID().toString()
                     +"."+extension;
+            
             log.debug("saveFolder: "+folder);
             file.transferTo(new File(folder, saveFileName));
             
             mediaList.add(new MediaDto(conceptNo,today,originalFileName,saveFileName,mediaType));
             fileSize+=file.getSize();
         }
-        log.debug("total saved size"+fileSize);
         long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-        log.debug("end time:"+afterTime);
         long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
-        log.debug("시간차이(m) : "+secDiffTime);
-        
+        log.debug("start:"+beforeTime+" | "+"end: "+afterTime+" | "+" processTime: "+ secDiffTime+" | "+" total save size: "+fileSize);
+        log.debug("===================save files end===========================");
         return mediaList;
 	}
 	@Override
 	public void resizeVideo(MediaDto media) throws Exception {
-		IVCompressor compressor = new IVCompressor();
-		String videoSaveFolder = this.videoResizePath + File.separator + media.getMediaSaveFolder();
-        File folder = new File(videoSaveFolder);
-        if (!folder.exists())
-            folder.mkdirs();
-        log.debug(folder.toString());
-        
-		File resizeFile = new File(folder,media.getMediaSaveFile());
-		File saveFile=new File(uploadPath+File.separator+media.getSavePath());
-		
-		
-		long beforeTime = System.currentTimeMillis(); 
 		log.debug("==========================resize video start=======================");
+		long beforeTime = System.currentTimeMillis(); 
 		
-		
+		IVCompressor compressor = new IVCompressor();
+        File folder = new File(this.videoResizePath + File.separator + media.getMediaSaveFolder());
+        if (!folder.exists()) {
+        	folder.mkdirs();
+        }
+        
+		File saveFile=new File(uploadPath+File.separator+media.getSavePath());
 		IVSize customRes = new IVSize();
 		customRes.setWidth(480);
 		customRes.setHeight(640);
 		IVVideoAttributes videoAttribute = new IVVideoAttributes();
 		videoAttribute.setFrameRate(24);
 		videoAttribute.setSize(customRes);
-	
-//		byte[] result=compressor.reduceVideoSizeWithCustomRes(Files.readAllBytes(saveFile.toPath()),VideoFormats.MP4, customRes);
-//		IVAudioAttributes audioAttribute = new IVAudioAttributes();
-//		byte[] result=compressor.reduceVideoSize(Files.readAllBytes(saveFile.toPath()), VideoFormats.MP4, ResizeResolution.R480P);
-//      byte[] result=compressor.reduceVideoSizeWithCustomRes(Files.readAllBytes(saveFile.toPath()), VideoFormats.MP4, customRes);
+		
 		byte[] result=compressor.encodeVideoWithAttributes(Files.readAllBytes(saveFile.toPath()), VideoFormats.MP4,null, videoAttribute);
-        Files.write(resizeFile.toPath(), result);
+		
+		File resizeFile = new File(folder,media.getMediaSaveFile());
+        Files.write(resizeFile.toPath(), result);  
+
+        File thumbNailFolder = new File(this.imageThumbPath + File.separator + media.getMediaSaveFolder());
         
-        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-        log.debug("end time:"+afterTime);
-        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
-        log.debug("시간차이(m) : "+secDiffTime);     
-        
-        String thumbSaveFolder = this.imageThumbPath + File.separator + media.getMediaSaveFolder();
-        File thumbNailFolder = new File(thumbSaveFolder);
         if (!thumbNailFolder.exists())
         	thumbNailFolder.mkdirs();
-        log.debug(folder.toString());
-        String IMAGE_FORMAT="jpg";
-        String FileName=media.getMediaSaveFile();
-		File thumbnailFile = new File(thumbNailFolder,(FileName.substring(0,FileName.lastIndexOf('.'))+"."+IMAGE_FORMAT));
-		
-		beforeTime = System.currentTimeMillis(); 
-		log.debug("==========================resize video start=======================");
-        generateVideoThumbnail(resizeFile,thumbnailFile,IMAGE_FORMAT);
-        afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-        log.debug("end time:"+afterTime);
-        secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
-        log.debug("시간차이(m) : "+secDiffTime);     
+
+		File thumbnailFile = new File(thumbNailFolder,media.getFileNameWithoutExtension()+"."+this.thumbnailImageFormat);
+		log.debug(thumbnailFile.toString());
+        generateVideoThumbnail(resizeFile,thumbnailFile);
+
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+        log.debug("start:"+beforeTime+" | "+"end: "+afterTime+" | "+" processTime: "+ secDiffTime);
+        log.debug("===================resize video end===========================");
        
 	}
 
 	@Override
 	public void generateImageThumbnail(MediaDto media) throws Exception {
-		String IMAGE_FORMAT="jpg";
-		String thumbSaveFolder = this.imageThumbPath + File.separator + media.getMediaSaveFolder();
-        File folder = new File(thumbSaveFolder);
+		log.debug("==========================generateImageThumbnail start=======================");
+		long beforeTime = System.currentTimeMillis(); 
+		
+        File folder = new File(this.imageThumbPath + File.separator + media.getMediaSaveFolder());
         if (!folder.exists())
             folder.mkdirs();
-        log.debug(folder.toString());
         
-		File thumbnailFile = new File(folder,media.getMediaSaveFile().substring(0,media.getMediaSaveFile().lastIndexOf('.'))+"."+IMAGE_FORMAT);
 		File saveFile=new File(uploadPath+File.separator+media.getSavePath());
+		File thumbnailFile = new File(folder,media.getFileNameWithoutExtension()+"."+this.thumbnailImageFormat);
 		
         BufferedImage bo_img = ImageIO.read(saveFile);
         
@@ -161,15 +152,19 @@ public class FileUtilImpl implements FileUtil{
 
         Thumbnails.of(saveFile)
                 .size(width, height)
-                .outputFormat(IMAGE_FORMAT)
+                .outputFormat(this.thumbnailImageFormat)
                 .toFile(thumbnailFile);
+        
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+        log.debug("start:"+beforeTime+" | "+"end: "+afterTime+" | "+" processTime: "+ secDiffTime);
+        log.debug("===================generateImageThumbnail end===========================");
 	}
 	
-	private void generateVideoThumbnail(File source, File thumbnail,String IMAGE_FORMAT) throws Exception {
-		log.debug("extracting thumbnail from video");
+	private void generateVideoThumbnail(File source, File thumbnail) throws Exception {;
 		int frameNumber = 0;
 		Picture picture = FrameGrab.getFrameFromFile(source, frameNumber);
 		BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
-		ImageIO.write(bufferedImage, IMAGE_FORMAT, thumbnail);
+		ImageIO.write(bufferedImage,this.thumbnailImageFormat, thumbnail);
 	}
 }

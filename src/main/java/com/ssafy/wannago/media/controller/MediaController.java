@@ -41,27 +41,10 @@ import lombok.extern.slf4j.Slf4j;
 public class MediaController {
 	private final MediaService mediaService;
 	
-	@Value("${file.path}")
-	private String uploadPath;
-	
-	@Value("${file.video.thumbnail.path}")
-	private String videoThumbPath;
-	
-	@Value("${file.image.thumbnail.path}")
-	private String imageThumbPath;
-	
 	@GetMapping("/{mediaNo}")
 	public ResponseEntity<Object> media(Authentication authentication,@PathVariable int mediaNo) throws Exception{
 		log.debug("Get Medias/No");
-		MediaDto media=mediaService.getMedia(mediaNo,authentication.getName());
-		String file = uploadPath +File.separator+ media.getSavePath();
-		Path filePath = Paths.get(file);
-		Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기
-		log.debug(filePath.toString());
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentDisposition(ContentDisposition.builder("attachment").filename(URLEncoder.encode(media.getMediaOriginFile(), "UTF-8").replaceAll("\\+", "%20")).build());
-		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-		return ResponseEntity.ok().headers(headers).body(resource);
+		return mediaService.sendMedia(mediaNo,authentication.getName());
 	}
 	
 	@DeleteMapping("/{mediaNo}")
@@ -78,24 +61,7 @@ public class MediaController {
 	@GetMapping("/{mediaNo}/thumbnail")
 	public ResponseEntity<Object> mediaThumbnail(Authentication authentication,@PathVariable int mediaNo) throws Exception{
 		log.debug("Get Medias/No/thumbNail");
-		MediaDto media=mediaService.getMedia(mediaNo,authentication.getName());
-		String mediaSaveName=media.getMediaSaveFile();
-		String mediaOriginName=media.getMediaOriginFile();
-		if("video".equals(media.getMediaType())) {
-			mediaSaveName=mediaSaveName.substring(0,mediaSaveName.lastIndexOf('.'))+"."+"jpg";
-			mediaOriginName=mediaOriginName.substring(0,mediaOriginName.lastIndexOf('.'))+"."+"jpg";
-		}else if("image".equals(media.getMediaType())) {
-			mediaSaveName=mediaSaveName.substring(0,mediaSaveName.lastIndexOf('.'))+"."+"jpg";
-			mediaOriginName=mediaOriginName.substring(0,mediaOriginName.lastIndexOf('.'))+"."+"jpg";
-		}
-		String file = imageThumbPath +File.separator+media.getMediaSaveFolder()+ File.separator+mediaSaveName;
-		Path filePath = Paths.get(file);
-		Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기
-		log.debug(filePath.toString());
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentDisposition(ContentDisposition.builder("attachment").filename(URLEncoder.encode(mediaOriginName, "UTF-8").replaceAll("\\+", "%20")).build());
-		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-		return ResponseEntity.ok().headers(headers).body(resource);
+		return mediaService.sendMediaThumbnail(mediaNo,authentication.getName());
 	}
 	
 //	@GetMapping(value="/{mediaNo}/resizeVideo")
@@ -146,14 +112,6 @@ public class MediaController {
 	@GetMapping("/{mediaNo}/resizeVideo")
 	public ResponseEntity<Object> mediaResizeVideo(Authentication authentication,@PathVariable int mediaNo) throws Exception{
 		log.debug("Get Medias/No");
-		MediaDto media=mediaService.getMedia(mediaNo,authentication.getName());
-		String file = videoThumbPath +File.separator+ media.getSavePath();
-		Path filePath = Paths.get(file);
-		Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기
-		log.debug(filePath.toString());
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentDisposition(ContentDisposition.builder("attachment").filename(URLEncoder.encode(media.getMediaOriginFile(), "UTF-8").replaceAll("\\+", "%20")).build());
-		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-		return ResponseEntity.ok().headers(headers).body(resource);
+		return mediaService.sendResizeVideo(mediaNo,authentication.getName());
 	}
 }
