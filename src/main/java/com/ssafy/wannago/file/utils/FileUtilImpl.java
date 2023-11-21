@@ -124,17 +124,17 @@ public class FileUtilImpl implements FileUtil{
         log.debug("시간차이(m) : "+secDiffTime);     
         
         String thumbSaveFolder = this.imageThumbPath + File.separator + media.getMediaSaveFolder();
-        File thumbnailfolder = new File(thumbSaveFolder);
-        if (!folder.exists())
-        	thumbnailfolder.mkdirs();
+        File thumbNailFolder = new File(thumbSaveFolder);
+        if (!thumbNailFolder.exists())
+        	thumbNailFolder.mkdirs();
         log.debug(folder.toString());
-        String IMAGE_PNG_FORMAT="png";
+        String IMAGE_FORMAT="jpg";
         String FileName=media.getMediaSaveFile();
-		File thumbnailFile = new File(thumbnailfolder,(FileName.substring(0,FileName.lastIndexOf('.'))+"."+IMAGE_PNG_FORMAT));
+		File thumbnailFile = new File(thumbNailFolder,(FileName.substring(0,FileName.lastIndexOf('.'))+"."+IMAGE_FORMAT));
 		
 		beforeTime = System.currentTimeMillis(); 
 		log.debug("==========================resize video start=======================");
-        generateVideoThumbnail(resizeFile,thumbnailFile,IMAGE_PNG_FORMAT);
+        generateVideoThumbnail(resizeFile,thumbnailFile,IMAGE_FORMAT);
         afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
         log.debug("end time:"+afterTime);
         secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
@@ -144,31 +144,32 @@ public class FileUtilImpl implements FileUtil{
 
 	@Override
 	public void generateImageThumbnail(MediaDto media) throws Exception {
+		String IMAGE_FORMAT="jpg";
 		String thumbSaveFolder = this.imageThumbPath + File.separator + media.getMediaSaveFolder();
         File folder = new File(thumbSaveFolder);
         if (!folder.exists())
             folder.mkdirs();
         log.debug(folder.toString());
         
-		File thumbnailFile = new File(folder,media.getMediaSaveFile());
+		File thumbnailFile = new File(folder,media.getMediaSaveFile().substring(0,media.getMediaSaveFile().lastIndexOf('.'))+"."+IMAGE_FORMAT);
 		File saveFile=new File(uploadPath+File.separator+media.getSavePath());
 		
         BufferedImage bo_img = ImageIO.read(saveFile);
         
-        double ratio = 3;
         int width = (int) (bo_img.getWidth() / this.imageThumbRatio);
         int height = (int) (bo_img.getHeight() / this.imageThumbRatio);
 
         Thumbnails.of(saveFile)
                 .size(width, height)
+                .outputFormat(IMAGE_FORMAT)
                 .toFile(thumbnailFile);
 	}
 	
-	private void generateVideoThumbnail(File source, File thumbnail,String IMAGE_PNG_FORMAT) throws Exception {
+	private void generateVideoThumbnail(File source, File thumbnail,String IMAGE_FORMAT) throws Exception {
 		log.debug("extracting thumbnail from video");
 		int frameNumber = 0;
 		Picture picture = FrameGrab.getFrameFromFile(source, frameNumber);
 		BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
-		ImageIO.write(bufferedImage, IMAGE_PNG_FORMAT, thumbnail);
+		ImageIO.write(bufferedImage, IMAGE_FORMAT, thumbnail);
 	}
 }

@@ -82,8 +82,11 @@ public class MediaController {
 		String mediaSaveName=media.getMediaSaveFile();
 		String mediaOriginName=media.getMediaOriginFile();
 		if("video".equals(media.getMediaType())) {
-			mediaSaveName=mediaSaveName.substring(0,mediaSaveName.lastIndexOf('.'))+"."+"png";
-			mediaOriginName=mediaOriginName.substring(0,mediaOriginName.lastIndexOf('.'))+"."+"png";
+			mediaSaveName=mediaSaveName.substring(0,mediaSaveName.lastIndexOf('.'))+"."+"jpg";
+			mediaOriginName=mediaOriginName.substring(0,mediaOriginName.lastIndexOf('.'))+"."+"jpg";
+		}else if("image".equals(media.getMediaType())) {
+			mediaSaveName=mediaSaveName.substring(0,mediaSaveName.lastIndexOf('.'))+"."+"jpg";
+			mediaOriginName=mediaOriginName.substring(0,mediaOriginName.lastIndexOf('.'))+"."+"jpg";
 		}
 		String file = imageThumbPath +File.separator+media.getMediaSaveFolder()+ File.separator+mediaSaveName;
 		Path filePath = Paths.get(file);
