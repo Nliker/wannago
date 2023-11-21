@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.wannago.attraction.model.mapper.AttractionMapper">
+	<resultMap type="attractionJoinDescriptionDto" id="attractionJoinDescriptionMap">
+		<result column="content_id" property="contentId"/>
+		<result column="title" property="title"/>
+		<result column="addr1" property="addr1"/>
+		<result column="first_image" property="firstImage"/>
+		<result column="readCount" property="readCount"/>
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
+		<result column="overview" property="description"/>
+	</resultMap>
+
+	<select id="selectByParam" parameterType="map" resultMap="attractionJoinDescriptionMap">
+		select 
+			a.content_id,
+			a.title,
+			a.addr1,
+			a.first_image,
+			a.readCount,
+			a.latitude,
+			a.longitude,
+			a_d.overview
+		from attractions a
+		join attraction_description a_d 
+		on a.content_id=a_d.content_id
+		where sido_code = #{sidoCode} limit 100;
+	</select>
+
+</mapper>
