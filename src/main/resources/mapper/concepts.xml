@@ -56,8 +56,36 @@
 	</delete>
 	<update id="updateConcept" parameterType="conceptDto">
 		update concepts
-		set concept_title=#{conceptTitle},
-		concept_description=#{conceptDescription}
+		<trim prefix="SET" suffixOverrides=",">
+		  <if test="conceptTitle != null">
+	        	concept_title = #{conceptTitle},
+	      </if>
+	      <if test="conceptDescription != null">
+	        	concept_description = #{conceptDescription},
+	      </if>
+		</trim>
 		where concept_no=#{conceptNo}
 	</update>
+	
+	
+	<select id="selectByParam" parameterType="map" resultMap="conceptMap">
+		select * from concepts
+		<where>
+			<if test='keyword != null and !"".equals(keyword)'>
+				and concept_title like CONCAT('%',#{keyword}, '%')
+			</if>
+		</where>
+		<choose>
+			<when test='orderby!=null and "latest".equals(orderby)'>
+				order by concept_reg_date desc 
+			</when>
+			<when test='orderby!=null and "old".equals(orderby)'>
+				order by concept_reg_date asc 
+			</when>
+			<otherwise>
+				order by concept_shared_cnt desc,concept_reg_date desc
+			</otherwise>
+		</choose>
+		limit #{start},#{size} 
+	</select>
 </mapper>

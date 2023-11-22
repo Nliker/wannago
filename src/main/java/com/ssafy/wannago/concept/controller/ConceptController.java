@@ -22,6 +22,7 @@ import com.ssafy.wannago.bucket.model.service.BucketService;
 import com.ssafy.wannago.concept.model.ConceptDetailResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDto;
 import com.ssafy.wannago.concept.model.ConceptResponseDto;
+import com.ssafy.wannago.concept.model.ConceptSearchResponseDto;
 import com.ssafy.wannago.concept.model.service.ConceptService;
 import com.ssafy.wannago.media.model.MediaResponseDto;
 
@@ -101,6 +102,13 @@ public class ConceptController {
 		conceptService.createBucket(authentication.getName(),conceptNo,bucket);
 		Map<String,String> result=new HashMap<>();
 		result.put("result","successful");
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@GetMapping("search")
+	public ResponseEntity<Map<String,List<ConceptSearchResponseDto>>> searchConceptList(Authentication authentication,@RequestParam Map<String, String> map) throws Exception{
+		Map<String,List<ConceptSearchResponseDto>> result=new HashMap<>();
+		result.put("searchConceptInfoList",conceptService.getSearchConceptList(authentication.getName(),map));
 		return ResponseEntity.ok().body(result);
 	}
 	

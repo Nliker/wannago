@@ -10,6 +10,7 @@ import com.ssafy.wannago.bucket.model.BucketResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDetailResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDto;
 import com.ssafy.wannago.concept.model.ConceptResponseDto;
+import com.ssafy.wannago.concept.model.ConceptSearchResponseDto;
 import com.ssafy.wannago.media.model.MediaResponseDto;
 
 public interface ConceptService {
@@ -30,4 +31,6 @@ public interface ConceptService {
 	void createBucket(String userId, int conceptNo,BucketDto bucket) throws Exception;
 
 	void updateConcept(String userId,int conceptNo, ConceptDto concept) throws Exception;
+
+	List<ConceptSearchResponseDto> getSearchConceptList(String name, Map<String, String> map) throws Exception;
 }

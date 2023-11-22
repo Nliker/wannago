@@ -18,5 +18,7 @@ public interface ConceptMapper {
 
 	void deleteByConceptNo(int conceptNo) throws Exception;
 
-	void updateConcept(ConceptDto updateConcept) throws Exception;;
+	void updateConcept(ConceptDto updateConcept) throws Exception;
+
+	List<ConceptDto> selectByParam(Map<String, Object> param) throws Exception;
 }

@@ -20,6 +20,7 @@ import com.ssafy.wannago.bucket.model.mapper.BucketMapper;
 import com.ssafy.wannago.concept.model.ConceptDetailResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDto;
 import com.ssafy.wannago.concept.model.ConceptResponseDto;
+import com.ssafy.wannago.concept.model.ConceptSearchResponseDto;
 import com.ssafy.wannago.concept.model.mapper.ConceptMapper;
 import com.ssafy.wannago.errorcode.ConceptErrorCode;
 import com.ssafy.wannago.exception.ConceptException;
@@ -41,6 +42,9 @@ public class ConceptServiceImpl implements ConceptService{
 
 	@Value("${concept.mediaListSize}")
 	private int conceptMediaListSize;
+	
+	@Value("${concept.ListSize}")
+	private int conceptListSize;
 
 	private final ConceptMapper conceptMapper;
 	private final UserMapper userMapper;
@@ -146,7 +150,7 @@ public class ConceptServiceImpl implements ConceptService{
 		}else {
 			MediaDto RandomMedia=mediaMapper.selectRandomOneByConceptNo(conceptNo);
 			MediaResponseDto mediaReponse= (RandomMedia==null)?
-					new MediaResponseDto(0,"raw",(new Date()).toString()):new MediaResponseDto(RandomMedia.getMediaNo(),RandomMedia.getMediaType(),RandomMedia.getMediaRegDate());
+					new MediaResponseDto(0,"image",(new Date()).toString()):new MediaResponseDto(RandomMedia.getMediaNo(),RandomMedia.getMediaType(),RandomMedia.getMediaRegDate());
 			conceptResponseDto.setMediaInfoList(Arrays.asList(mediaReponse));
 		}
 	}
@@ -261,6 +265,35 @@ public class ConceptServiceImpl implements ConceptService{
 		updateConcept.setConceptNo(conceptNo);
 		log.debug(updateConcept.toString());
 		conceptMapper.updateConcept(updateConcept);
+	}
+
+
+
+	@Override
+	public List<ConceptSearchResponseDto> getSearchConceptList(String name, Map<String, String> map) throws Exception {
+		log.info("class:=================getSearchConceptList====================");
+		
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("start",map.get("start")==null?0:Integer.parseInt(map.get("start")));
+		param.put("size",map.get("size")==null?conceptListSize:Integer.parseInt(map.get("size")));
+		param.put("keyword",map.get("keyword"));
+		param.put("orderby",map.get("orderby"));
+		log.debug(param.toString());
+
+		List<ConceptDto> conceptList=conceptMapper.selectByParam(param);
+		
+		List<ConceptSearchResponseDto> conceptResponseList=new ArrayList<>();
+		
+		for(ConceptDto concept:conceptList) {
+			ConceptSearchResponseDto conceptResponseDto=new ConceptSearchResponseDto(concept);
+			MediaDto RandomMedia=mediaMapper.selectRandomOneByConceptNo(concept.getConceptNo());
+			MediaResponseDto mediaReponse= (RandomMedia==null)?
+					new MediaResponseDto(0,"image",(new Date()).toString()):new MediaResponseDto(RandomMedia.getMediaNo(),RandomMedia.getMediaType(),RandomMedia.getMediaRegDate());
+			conceptResponseDto.setMediaInfoList(Arrays.asList(mediaReponse));
+			conceptResponseList.add(conceptResponseDto);
+		}
+		return conceptResponseList;
 	}
 }
 
