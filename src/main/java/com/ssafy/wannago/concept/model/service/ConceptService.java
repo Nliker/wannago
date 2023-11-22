@@ -33,7 +33,7 @@ public interface ConceptService {
 
 	void updateConcept(String userId,int conceptNo, ConceptDto concept) throws Exception;
 
-	List<ConceptSearchResponseDto> getSearchConceptList(String name, Map<String, String> map) throws Exception;
+	List<ConceptSearchResponseDto> getSearchConceptList(Map<String, String> map) throws Exception;
 
 	List<AttractionResponseDto> getConceptAttractionList(int conceptNo) throws Exception;
 }

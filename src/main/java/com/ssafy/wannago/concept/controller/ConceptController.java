@@ -37,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ConceptController {
 	private final ConceptService conceptService;
 	
+	
 	@PostMapping("")
 	public ResponseEntity<Map<String,ConceptResponseDto>> concept(Authentication authentication,ConceptDto concept,@RequestParam(value="upfile",required=false) MultipartFile[] files) throws Exception{
 		Map<String,ConceptResponseDto> result=new HashMap<>();
@@ -107,9 +108,17 @@ public class ConceptController {
 	}
 	
 	@GetMapping("/{conceptNo}/attractions")
-	public ResponseEntity<Map<String,List<AttractionResponseDto>>> searchConceptList(@PathVariable int conceptNo) throws Exception{
+	public ResponseEntity<Map<String,List<AttractionResponseDto>>> conceptAttractionList(@PathVariable int conceptNo) throws Exception{
 		Map<String,List<AttractionResponseDto>> result=new HashMap<>();
 		result.put("attractionInfoList",conceptService.getConceptAttractionList(conceptNo));
 		return ResponseEntity.ok().body(result); 
 	}
+	
+	@GetMapping("/search")
+	public ResponseEntity<Map<String,List<ConceptSearchResponseDto>>> conceptAttractionList(@RequestParam Map<String, String> map) throws Exception{
+		Map<String,List<ConceptSearchResponseDto>> result=new HashMap<>();
+		result.put("searchConcetpInfoList",conceptService.getSearchConceptList(map));
+		return ResponseEntity.ok().body(result);
+	}
+	
 }

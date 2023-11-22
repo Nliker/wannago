@@ -72,7 +72,7 @@
 		select * from concepts
 		<where>
 			<if test='keyword != null and !"".equals(keyword)'>
-				and concept_title like CONCAT('%',#{keyword}, '%')
+				and match(concept_title) against(#{keyword} in natural language mode)
 			</if>
 		</where>
 		<choose>

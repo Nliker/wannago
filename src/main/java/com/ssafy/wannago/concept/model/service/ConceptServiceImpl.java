@@ -275,7 +275,7 @@ public class ConceptServiceImpl implements ConceptService{
 
 
 	@Override
-	public List<ConceptSearchResponseDto> getSearchConceptList(String name, Map<String, String> map) throws Exception {
+	public List<ConceptSearchResponseDto> getSearchConceptList(Map<String, String> map) throws Exception {
 		log.info("class:=================getSearchConceptList====================");
 		
 		
