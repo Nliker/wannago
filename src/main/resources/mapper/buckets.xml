@@ -98,4 +98,9 @@
 		delete from buckets
 		where concept_no=#{conceptNo}
 	</delete>
+	
+	<select id="selectCntByContentId" parameterType="int" resultType="int">
+		select count(*) from buckets
+		where bucket_deleted=0
+	</select>
 </mapper>

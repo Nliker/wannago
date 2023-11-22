@@ -29,4 +29,6 @@ public interface BucketMapper {
 
 	void deleteByConcepNo(int conceptNo) throws SQLException;
 
+	Integer selectCntByContentId(int conceptNo) throws SQLException;
+
 }

@@ -7,5 +7,7 @@ public interface BucketService {
 	void deleteBucket(String userId, int bucketNo) throws Exception;
 
 	void updateBucket(String userId, int bucketNo, BucketDto bucket) throws Exception;
+
+	Integer getBucketCountByContentId(int conceptNo) throws Exception;
 	
 }

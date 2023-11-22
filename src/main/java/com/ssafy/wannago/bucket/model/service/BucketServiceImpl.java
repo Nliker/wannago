@@ -62,4 +62,9 @@ public class BucketServiceImpl implements BucketService{
 		return false;
 	}
 
+	@Override
+	public Integer getBucketCountByContentId(int conceptNo) throws Exception {
+		return bucketMapper.selectCntByContentId(conceptNo);
+	}
+
 }
