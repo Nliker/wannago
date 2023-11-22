@@ -184,7 +184,8 @@ public class ConceptServiceImpl implements ConceptService{
 		
 		return mediaList;
 	}
-
+	
+	@Transactional
 	@Override
 	public void addConceptMediaList(String userId, int conceptNo, MultipartFile[] files) throws Exception {
 		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
@@ -322,6 +323,7 @@ public class ConceptServiceImpl implements ConceptService{
 
 	@Override
 	public List<BucketResponseDto> getBucketTrash(String userId, int conceptNo) throws Exception {
+		log.info("class:=================getBucketTrash====================");
 		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
 		if(concept==null) {
 			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
@@ -336,6 +338,33 @@ public class ConceptServiceImpl implements ConceptService{
 		}
 		
 		return bucketResponseList;
+	}
+
+
+	@Transactional
+	@Override
+	public void createConceptShare(String userId, int conceptNo) throws Exception {
+		log.info("class:=================createConceptShare====================");
+		log.info("shared conceptNo:" + conceptNo);
+		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
+		if(concept==null) {
+			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
+		}
+		ConceptDto newConcept=new ConceptDto();
+		newConcept.setConceptTitle(concept.getConceptTitle());
+		newConcept.setUserId(userId);
+		newConcept.setUserName((userMapper.selectByUserId(userId)).getUserName());
+		conceptMapper.insertConcept(newConcept);
+		log.info("new concept:" +newConcept.toString());
+		for(AttractionJoinDescriptionDto attraction:attractionMapper.selectByConceptNo(conceptNo)) {
+			BucketDto bucket=new BucketDto();
+			bucket.setContentId(attraction.getContentId());
+			bucket.setConceptNo(newConcept.getConceptNo());
+			bucketMapper.insertBucket(bucket);
+		}
+		
+		conceptMapper.updateConceptShareCountUp(conceptNo);
+		
 	}
 }
 

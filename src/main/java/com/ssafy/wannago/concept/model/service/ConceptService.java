@@ -38,4 +38,6 @@ public interface ConceptService {
 	List<AttractionResponseDto> getConceptAttractionList(int conceptNo) throws Exception;
 
 	List<BucketResponseDto> getBucketTrash(String userId, int conceptNo) throws Exception;
+
+	void createConceptShare(String userId, int conceptNo) throws Exception;
 }

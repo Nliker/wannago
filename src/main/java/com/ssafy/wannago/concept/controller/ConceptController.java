@@ -121,4 +121,12 @@ public class ConceptController {
 		return ResponseEntity.ok().body(result);
 	}
 	
+	@PostMapping("/{conceptNo}/share")
+	public ResponseEntity<Map<String,String>> conceptShare(Authentication authentication,@PathVariable int conceptNo) throws Exception{
+		conceptService.createConceptShare(authentication.getName(),conceptNo);
+		Map<String,String> result=new HashMap<>();
+		result.put("result","successful");
+		return ResponseEntity.ok().body(result);
+	}
+	
 }

@@ -88,4 +88,8 @@
 		</choose>
 		limit #{start},#{size} 
 	</select>
+	
+	<update id="updateConceptShareCountUp" parameterType="int">
+		update concepts set concept_shared_cnt=concepts.concept_shared_cnt+1 where concept_no=#{conceptNo}
+	</update>
 </mapper>

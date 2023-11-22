@@ -21,4 +21,6 @@ public interface ConceptMapper {
 	void updateConcept(ConceptDto updateConcept) throws Exception;
 
 	List<ConceptDto> selectByParam(Map<String, Object> param) throws Exception;
+
+	void updateConceptShareCountUp(int conceptNo) throws Exception;
 }
