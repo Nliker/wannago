@@ -104,4 +104,21 @@
 		where content_id=#{contentId}
 		and bucket_deleted=0
 	</select>
+	
+	<select id="selectDeletedByConceptNo" parameterType="int" resultMap="bucketJoinAttractionMap">
+		select 
+			b.concept_no,
+			b.bucket_no,
+			b.bucket_deadline,
+			b.bucket_is_done,
+			a.content_id,
+			a.title,
+			a.addr1,
+			a.first_image 
+		from buckets b
+		join attractions a 
+		on b.content_id=a.content_id
+		and b.concept_no=#{conceptNo}
+		and bucket_deleted=1
+	</select>
 </mapper>

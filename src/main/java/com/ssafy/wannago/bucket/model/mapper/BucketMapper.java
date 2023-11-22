@@ -31,4 +31,6 @@ public interface BucketMapper {
 
 	Integer selectCntByContentId(int conceptNo) throws SQLException;
 
+	List<BucketJoinAttractionDto> selectDeletedByConceptNo(int conceptNo) throws SQLException;
+
 }

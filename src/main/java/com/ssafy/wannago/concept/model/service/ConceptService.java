@@ -36,4 +36,6 @@ public interface ConceptService {
 	List<ConceptSearchResponseDto> getSearchConceptList(Map<String, String> map) throws Exception;
 
 	List<AttractionResponseDto> getConceptAttractionList(int conceptNo) throws Exception;
+
+	List<BucketResponseDto> getBucketTrash(String userId, int conceptNo) throws Exception;
 }

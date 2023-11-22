@@ -317,5 +317,25 @@ public class ConceptServiceImpl implements ConceptService{
 		}
 		return attractionList;
 	}
+
+
+
+	@Override
+	public List<BucketResponseDto> getBucketTrash(String userId, int conceptNo) throws Exception {
+		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
+		if(concept==null) {
+			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
+		}
+		if(!concept.getUserId().equals(userId)) {
+			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
+		}
+		List<BucketResponseDto> bucketResponseList=new ArrayList<>();
+		for(BucketJoinAttractionDto bucket:bucketMapper.selectDeletedByConceptNo(conceptNo)) {
+			log.debug(bucket.toString());
+			bucketResponseList.add(new BucketResponseDto(bucket));
+		}
+		
+		return bucketResponseList;
+	}
 }
 
