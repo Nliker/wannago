@@ -11,7 +11,6 @@ public class AttractionJoinDescriptionDto {
 	private String title;
 	private String addr1;
 	private String firstImage;
-	private int readCount;
 	private BigDecimal latitude;
 	private BigDecimal longitude;
 	private String description;
@@ -19,7 +18,7 @@ public class AttractionJoinDescriptionDto {
 	@Override
 	public String toString() {
 		return "AttractionJoinDescriptionDto [contentId=" + contentId + ", title=" + title + ", addr1=" + addr1
-				+ ", firstImage=" + firstImage + ", readCount=" + readCount + ", latitude=" + latitude + ", longitude="
+				+ ", firstImage=" + firstImage + ", latitude=" + latitude + ", longitude="
 				+ longitude + ", description=" + description + "]";
 	}
 	
