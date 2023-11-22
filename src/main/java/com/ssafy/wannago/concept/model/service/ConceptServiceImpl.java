@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.wannago.attraction.model.AttractionJoinDescriptionDto;
+import com.ssafy.wannago.attraction.model.AttractionResponseDto;
+import com.ssafy.wannago.attraction.model.mapper.AttractionMapper;
 import com.ssafy.wannago.bucket.model.BucketDto;
 import com.ssafy.wannago.bucket.model.BucketJoinAttractionDto;
 import com.ssafy.wannago.bucket.model.BucketResponseDto;
@@ -50,6 +53,7 @@ public class ConceptServiceImpl implements ConceptService{
 	private final UserMapper userMapper;
 	private final MediaMapper mediaMapper;
 	private final BucketMapper bucketMapper;
+	private final AttractionMapper attractionMapper;
 	
 	private final FileUtilFactory fileUtilFactory;
 	
@@ -214,6 +218,7 @@ public class ConceptServiceImpl implements ConceptService{
 			throw new ConceptException(ConceptErrorCode.UserIdNotMatchConceptUserId.getCode(), ConceptErrorCode.UserIdNotMatchConceptUserId.getDescription());
 		}
 		mediaMapper.deleteByConceptNo(conceptNo);
+		bucketMapper.deleteByConcepNo(conceptNo);
 		conceptMapper.deleteByConceptNo(conceptNo);
 		
 	}
@@ -294,6 +299,21 @@ public class ConceptServiceImpl implements ConceptService{
 			conceptResponseList.add(conceptResponseDto);
 		}
 		return conceptResponseList;
+	}
+
+
+	@Override
+	public List<AttractionResponseDto> getConceptAttractionList(int conceptNo) throws Exception {
+		log.info("class:=================getConceptAttractionList====================");
+		ConceptDto concept=conceptMapper.selectByConceptNo(conceptNo);
+		if(concept==null) {
+			throw new ConceptException(ConceptErrorCode.ConceptNotFound.getCode(), ConceptErrorCode.ConceptNotFound.getDescription());
+		}
+		List<AttractionResponseDto> attractionList=new ArrayList<>();
+		for(AttractionJoinDescriptionDto attraction:attractionMapper.selectByConceptNo(conceptNo)) {
+			attractionList.add(new AttractionResponseDto(attraction));
+		}
+		return attractionList;
 	}
 }
 

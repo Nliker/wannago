@@ -11,7 +11,6 @@ public class AttractionResponseDto {
 	private String title;
 	private String address;
 	private String image;
-	private int readCount;
 	private BigDecimal latitude;
 	private BigDecimal longitude;
 	private String description;
@@ -20,7 +19,6 @@ public class AttractionResponseDto {
 		this.contentId=attraction.getContentId();
 		this.address=attraction.getAddr1();
 		this.image=attraction.getFirstImage();
-		this.readCount=attraction.getReadCount();
 		this.title=attraction.getTitle();
 		this.latitude=attraction.getLatitude();
 		this.longitude=attraction.getLongitude();
@@ -30,7 +28,7 @@ public class AttractionResponseDto {
 	@Override
 	public String toString() {
 		return "AttractionResponseDto [contentId=" + contentId + ", title=" + title + ", address=" + address
-				+ ", image=" + image + ", readCount=" + readCount + ", latitude=" + latitude + ", longitude="
+				+ ", image=" + image + ", readCount=" + latitude + ", longitude="
 				+ longitude + ", description=" + description + "]";
 	}
 	

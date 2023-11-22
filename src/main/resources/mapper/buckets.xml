@@ -76,9 +76,9 @@
 	</select>
 	
 	<update id="deleteByBucketNo" parameterType="int">
-		update from buckets 
-		where bucket_no=#{bucketNo}
+		update buckets 
 		set bucket_deleted=1
+		where bucket_no=#{bucketNo}
 	</update>
 	
 	<update id="updateByBucketNo" parameterType="bucketDto">
@@ -94,5 +94,8 @@
 		where bucket_no=#{bucketNo}
 		<include refid="notDeleted"></include>
 	</update>
-
+	<delete id="deleteByConcepNo" parameterType="int">
+		delete from buckets
+		where concept_no=#{conceptNo}
+	</delete>
 </mapper>

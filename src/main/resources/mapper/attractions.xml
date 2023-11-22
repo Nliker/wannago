@@ -8,7 +8,6 @@
 		<result column="title" property="title"/>
 		<result column="addr1" property="addr1"/>
 		<result column="first_image" property="firstImage"/>
-		<result column="readCount" property="readCount"/>
 		<result column="latitude" property="latitude"/>
 		<result column="longitude" property="longitude"/>
 		<result column="overview" property="description"/>
@@ -20,7 +19,6 @@
 			a.title,
 			a.addr1,
 			a.first_image,
-			a.readCount,
 			a.latitude,
 			a.longitude,
 			a_d.overview
@@ -33,6 +31,22 @@
 		<if test='title != null and !"".equals(title)'>
 			and match(title) against(#{title} in natural language mode);
 		</if>
+	</select>
+	
+	<select id="selectByConceptNo" parameterType="int" resultMap="attractionJoinDescriptionMap">
+		select 
+			distinct a.content_id,
+			a.title,
+			a.addr1,
+			a.first_image,
+			a.latitude,
+			a.longitude,
+			a_d.overview
+		from buckets b
+		join attractions a on b.content_id=a.content_id
+		join concepts c on c.concept_no=b.concept_no
+		join attraction_description a_d on b.content_id=a_d.content_id
+		where b.concept_no=#{conceptNo} and b.bucket_deleted=0
 	</select>
 
 </mapper>

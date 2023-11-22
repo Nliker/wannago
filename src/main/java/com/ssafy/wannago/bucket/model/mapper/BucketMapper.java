@@ -27,4 +27,6 @@ public interface BucketMapper {
 
 	void updateByBucketNo(BucketDto bucket) throws SQLException;
 
+	void deleteByConcepNo(int conceptNo) throws SQLException;
+
 }

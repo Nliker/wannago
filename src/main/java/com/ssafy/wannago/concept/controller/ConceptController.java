@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.wannago.attraction.model.AttractionResponseDto;
 import com.ssafy.wannago.bucket.model.BucketDto;
 import com.ssafy.wannago.bucket.model.BucketResponseDto;
 import com.ssafy.wannago.bucket.model.service.BucketService;
@@ -105,11 +106,10 @@ public class ConceptController {
 		return ResponseEntity.ok().body(result);
 	}
 	
-	@GetMapping("search")
-	public ResponseEntity<Map<String,List<ConceptSearchResponseDto>>> searchConceptList(Authentication authentication,@RequestParam Map<String, String> map) throws Exception{
-		Map<String,List<ConceptSearchResponseDto>> result=new HashMap<>();
-		result.put("searchConceptInfoList",conceptService.getSearchConceptList(authentication.getName(),map));
-		return ResponseEntity.ok().body(result);
+	@GetMapping("/{conceptNo}/attractions")
+	public ResponseEntity<Map<String,List<AttractionResponseDto>>> searchConceptList(@PathVariable int conceptNo) throws Exception{
+		Map<String,List<AttractionResponseDto>> result=new HashMap<>();
+		result.put("attractionInfoList",conceptService.getConceptAttractionList(conceptNo));
+		return ResponseEntity.ok().body(result); 
 	}
-
 }
