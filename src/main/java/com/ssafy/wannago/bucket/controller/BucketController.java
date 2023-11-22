@@ -1,6 +1,7 @@
 package com.ssafy.wannago.bucket.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.wannago.bucket.model.BucketDto;
+import com.ssafy.wannago.bucket.model.BucketResponseDto;
 import com.ssafy.wannago.bucket.model.service.BucketService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,4 +44,11 @@ public class BucketController {
 		return ResponseEntity.ok().body(result);
 	}
 	
+	@PutMapping("/{bucketNo}/restore")
+	public ResponseEntity<Map<String,String>> restoreConceptBucket(Authentication authentication,@PathVariable int bucketNo) throws Exception{
+		bucketService.restoreBucket(authentication.getName(),bucketNo);
+		Map<String,String> result=new HashMap<>();
+		result.put("result","successful");
+		return ResponseEntity.ok().body(result);
+	}
 }

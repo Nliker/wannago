@@ -67,4 +67,15 @@ public class BucketServiceImpl implements BucketService{
 		return bucketMapper.selectCntByContentId(conceptNo);
 	}
 
+	@Override
+	public void restoreBucket(String userId, int bucketNo) throws Exception {
+		log.debug(bucketMapper.selectBucketUserId(bucketNo));
+		if(!userId.equals(bucketMapper.selectBucketUserId(bucketNo))) {
+			throw new BucketException(BucketErrorCode.UserIdNotMatchBucketUserId.getCode(),BucketErrorCode.UserIdNotMatchBucketUserId.getDescription());
+		}
+		
+		bucketMapper.updateNotDeleteByBucketNo(bucketNo);
+		
+	}
+
 }

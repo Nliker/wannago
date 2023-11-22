@@ -33,4 +33,6 @@ public interface BucketMapper {
 
 	List<BucketJoinAttractionDto> selectDeletedByConceptNo(int conceptNo) throws SQLException;
 
+	void updateNotDeleteByBucketNo(int bucketNo) throws SQLException;
+
 }
