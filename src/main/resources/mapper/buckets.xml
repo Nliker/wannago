@@ -101,6 +101,7 @@
 	
 	<select id="selectCntByContentId" parameterType="int" resultType="int">
 		select count(*) from buckets
-		where bucket_deleted=0
+		where content_id=#{contentId}
+		and bucket_deleted=0
 	</select>
 </mapper>
