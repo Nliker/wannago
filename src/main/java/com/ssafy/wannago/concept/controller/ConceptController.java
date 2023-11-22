@@ -111,6 +111,5 @@ public class ConceptController {
 		result.put("searchConceptInfoList",conceptService.getSearchConceptList(authentication.getName(),map));
 		return ResponseEntity.ok().body(result);
 	}
-	
-	
+
 }

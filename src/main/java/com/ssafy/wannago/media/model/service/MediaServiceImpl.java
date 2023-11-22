@@ -86,14 +86,10 @@ public class MediaServiceImpl implements MediaService {
 		mediaMapper.deleteByMediaNo(mediaNo);
 	}
 	@Override
-	public ResponseEntity<Object> sendMediaThumbnail(int mediaNo, String userId) throws Exception {
+	public ResponseEntity<Object> sendMediaThumbnail(int mediaNo) throws Exception {
 		MediaDto media=mediaMapper.selectByMediaNo(mediaNo);
 		if(media==null) {
 			throw new MediaException(MediaErrorCode.NotFoundMedia.getCode(),MediaErrorCode.NotFoundMedia.getDescription());
-		}
-		ConceptDto concept=conceptMapper.selectByConceptNo(media.getConceptNo());
-		if(!concept.getUserId().equals(userId)) {
-			throw new MediaException(MediaErrorCode.MediaUserIdNotMatch.getCode(),MediaErrorCode.MediaUserIdNotMatch.getDescription());
 		}
 		
 		String mediaSaveName=media.getFileNameWithoutExtension()+"."+this.thumbnailImageFormat;
@@ -111,16 +107,15 @@ public class MediaServiceImpl implements MediaService {
 		return ResponseEntity.ok().headers(headers).body(resource);
 	}
 	@Override
-	public ResponseEntity<Object> sendResizeVideo(int mediaNo, String userId) throws Exception {
+	public ResponseEntity<Object> sendResizeVideo(int mediaNo) throws Exception {
 		MediaDto media=mediaMapper.selectByMediaNo(mediaNo);
 		if(media==null) {
 			throw new MediaException(MediaErrorCode.NotFoundMedia.getCode(),MediaErrorCode.NotFoundMedia.getDescription());
 		}
-		ConceptDto concept=conceptMapper.selectByConceptNo(media.getConceptNo());
-		if(!concept.getUserId().equals(userId)) {
-			throw new MediaException(MediaErrorCode.MediaUserIdNotMatch.getCode(),MediaErrorCode.MediaUserIdNotMatch.getDescription());
+		if(!"video".equals(media.getMediaType())) {
+			throw new MediaException(MediaErrorCode.NotCorrectType.getCode(),MediaErrorCode.NotCorrectType.getDescription());
 		}
-
+		
 		Path filePath = Paths.get(videoThumbPath +File.separator+ media.getSavePath());
 		if(!Files.exists(filePath)) {
 			throw new FileException(FileErrorCode.NotFoundFile.getCode(),FileErrorCode.NotFoundFile.getDescription());

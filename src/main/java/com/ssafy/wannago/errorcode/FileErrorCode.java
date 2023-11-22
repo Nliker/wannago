@@ -4,8 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum FileErrorCode {
-	NotFoundFile(404,"요청하신 파일을 찾을 수 없습니다."),
-	;
+	NotFoundFile(404,"요청하신 파일을 찾을 수 없습니다.");
 	
 	
     private int code;

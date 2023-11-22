@@ -59,9 +59,9 @@ public class MediaController {
 	
 	
 	@GetMapping("/{mediaNo}/thumbnail")
-	public ResponseEntity<Object> mediaThumbnail(Authentication authentication,@PathVariable int mediaNo) throws Exception{
+	public ResponseEntity<Object> mediaThumbnail(@PathVariable int mediaNo) throws Exception{
 		log.debug("Get Medias/No/thumbNail");
-		return mediaService.sendMediaThumbnail(mediaNo,authentication.getName());
+		return mediaService.sendMediaThumbnail(mediaNo);
 	}
 	
 //	@GetMapping(value="/{mediaNo}/resizeVideo")
@@ -110,8 +110,8 @@ public class MediaController {
 //	}
 	
 	@GetMapping("/{mediaNo}/resizeVideo")
-	public ResponseEntity<Object> mediaResizeVideo(Authentication authentication,@PathVariable int mediaNo) throws Exception{
+	public ResponseEntity<Object> mediaResizeVideo(@PathVariable int mediaNo) throws Exception{
 		log.debug("Get Medias/No");
-		return mediaService.sendResizeVideo(mediaNo,authentication.getName());
+		return mediaService.sendResizeVideo(mediaNo);
 	}
 }
