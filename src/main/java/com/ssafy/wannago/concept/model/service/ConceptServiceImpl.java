@@ -65,23 +65,25 @@ public class ConceptServiceImpl implements ConceptService{
 		UserDto user=userMapper.selectByUserId(userId);
 		concept.setUserId(user.getUserId());
 		concept.setUserName(user.getUserName());
-		conceptMapper.insertConcept(concept);	
+		conceptMapper.insertConcept(concept);
 		
-		FileUtil fileUtil=fileUtilFactory.getInstance(files);
-		List<MediaDto> mediaList=fileUtil.saveFiles(concept.getConceptNo());
-		
-		
-		log.debug("media List insert start");
-		
-		if(mediaList.size()!=0) {
-			mediaMapper.insertMediaList(mediaList);
-		}
-		for(MediaDto media:mediaList) {
-			log.debug("media thumb start");
-			if("image".equals(media.getMediaType())) {
-				fileUtil.generateImageThumbnail(media);
-			}else if("video".equals(media.getMediaType())){
-				fileUtil.resizeVideo(media);
+		if(files!=null) {
+			FileUtil fileUtil=fileUtilFactory.getInstance(files);
+			List<MediaDto> mediaList=fileUtil.saveFiles(concept.getConceptNo());
+			
+			
+			log.debug("media List insert start");
+			
+			if(mediaList.size()!=0) {
+				mediaMapper.insertMediaList(mediaList);
+			}
+			for(MediaDto media:mediaList) {
+				log.debug("media thumb start");
+				if("image".equals(media.getMediaType())) {
+					fileUtil.generateImageThumbnail(media);
+				}else if("video".equals(media.getMediaType())){
+					fileUtil.resizeVideo(media);
+				}
 			}
 		}
 		
