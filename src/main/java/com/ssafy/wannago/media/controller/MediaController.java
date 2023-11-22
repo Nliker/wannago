@@ -61,6 +61,9 @@ public class MediaController {
 	@GetMapping("/{mediaNo}/thumbnail")
 	public ResponseEntity<Object> mediaThumbnail(@PathVariable int mediaNo) throws Exception{
 		log.debug("Get Medias/No/thumbNail");
+		if(mediaNo==0) {
+			return mediaService.sendDefaultImage(mediaNo);
+		}
 		return mediaService.sendMediaThumbnail(mediaNo);
 	}
 	

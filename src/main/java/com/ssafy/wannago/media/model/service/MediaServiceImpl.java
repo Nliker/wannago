@@ -46,6 +46,9 @@ public class MediaServiceImpl implements MediaService {
 	@Value("${file.image.thumbnail.Format}")
 	private String thumbnailImageFormat;
 	
+	@Value("${file.image.defualtImageFile}")
+	private String defualtImageFile;
+	
 	private final MediaMapper mediaMapper;
 	private final ConceptMapper conceptMapper;
 	
@@ -106,6 +109,24 @@ public class MediaServiceImpl implements MediaService {
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		return ResponseEntity.ok().headers(headers).body(resource);
 	}
+	
+	@Override
+	public ResponseEntity<Object> sendDefaultImage(int mediaNo) throws Exception {
+		log.debug("defaut send defaultImage");
+		log.debug(defualtImageFile);
+		Path filePath = Paths.get(imageThumbPath +File.separator+defualtImageFile);
+		if(!Files.exists(filePath)) {
+			throw new FileException(FileErrorCode.NotFoundFile.getCode(),FileErrorCode.NotFoundFile.getDescription());
+		}
+		Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentDisposition(ContentDisposition.builder("attachment").filename(URLEncoder.encode(defualtImageFile, "UTF-8").replaceAll("\\+", "%20")).build());
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		return ResponseEntity.ok().headers(headers).body(resource);
+	}
+	
+	
 	@Override
 	public ResponseEntity<Object> sendResizeVideo(int mediaNo) throws Exception {
 		MediaDto media=mediaMapper.selectByMediaNo(mediaNo);

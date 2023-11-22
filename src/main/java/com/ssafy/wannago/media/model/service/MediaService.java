@@ -7,4 +7,5 @@ public interface MediaService {
 	ResponseEntity<Object> sendMediaThumbnail(int mediaNo) throws Exception;
 	ResponseEntity<Object> sendResizeVideo(int mediaNo) throws Exception;
 	void deleteMedia(int mediaNo,String userId) throws Exception;
+	ResponseEntity<Object> sendDefaultImage(int mediaNo) throws Exception;
 }
