@@ -23,6 +23,7 @@
 		<result column="content_id" property="contentId"/>
 		<result column="bucket_deadline" property="bucketDeadline"/>
 		<result column="bucket_is_done" property="bucketIsDone"/>
+		<result column="bucket_deleted" property="bucketDeleted"/>
 	</resultMap>
 	
 	<select id="selectCntByConceptNo" parameterType="int" resultType="int">
@@ -63,7 +64,6 @@
 	<select id="selectByBucketNo" parameterType="int" resultMap="bucketMap">
 		select * from buckets 
 		where bucket_no=#{bucketNo}
-		<include refid="notDeleted"></include>
 	</select>
 	
 	<select id="selectBucketUserId" parameterType="int" resultType="string">
@@ -126,4 +126,9 @@
 		set bucket_deleted=0
 		where bucket_no=#{bucketNo}
 	</update>
+	
+	<delete id="deletePermanentByBucketNo" parameterType="int">
+		delete from buckets
+		where bucket_no=#{bucketNo}
+	</delete>
 </mapper>

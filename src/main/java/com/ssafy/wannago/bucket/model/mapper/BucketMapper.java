@@ -35,4 +35,6 @@ public interface BucketMapper {
 
 	void updateNotDeleteByBucketNo(int bucketNo) throws SQLException;
 
+	void deletePermanentByBucketNo(int bucketNo) throws SQLException;
+
 }

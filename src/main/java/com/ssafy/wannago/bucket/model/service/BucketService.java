@@ -11,5 +11,7 @@ public interface BucketService {
 	Integer getBucketCountByContentId(int conceptNo) throws Exception;
 
 	void restoreBucket(String userId, int bucketNo) throws Exception;
+
+	void deleteBucketPermanent(String userId, int bucketNo) throws Exception;
 	
 }
