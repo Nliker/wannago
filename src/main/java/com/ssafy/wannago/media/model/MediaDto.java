@@ -1,9 +1,6 @@
 package com.ssafy.wannago.media.model;
 
 import java.io.File;
-
-import org.springframework.beans.factory.annotation.Value;
-
 import lombok.Getter;
 import lombok.Setter;
 

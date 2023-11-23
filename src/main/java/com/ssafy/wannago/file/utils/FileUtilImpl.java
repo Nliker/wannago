@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import org.jcodec.api.FrameGrab;
+import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -161,7 +162,10 @@ public class FileUtilImpl implements FileUtil{
         log.debug("===================generateImageThumbnail end===========================");
 	}
 	
-	private void generateVideoThumbnail(File source, File thumbnail) throws Exception {;
+	private void generateVideoThumbnail(File source, File thumbnail) throws Exception {
+//		FrameGrab frameGrab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(source));
+//        double durationInSeconds = frameGrab.getVideoTrack().getMeta().getTotalDuration();
+//        log.info("Video length: {} seconds", durationInSeconds);
 		int frameNumber = 0;
 		Picture picture = FrameGrab.getFrameFromFile(source, frameNumber);
 		BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);

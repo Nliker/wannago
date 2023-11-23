@@ -1,5 +1,6 @@
 package com.ssafy.wannago.response;
 
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.MethodParameter;
@@ -39,12 +40,14 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         log.debug("body class: "+body.getClass().toString());
         if(body instanceof ResourceRegion || body instanceof Resource) {
         	return body;
-        }else if (body instanceof CustomException) {//실패한 반환
+        }
+        if(body instanceof CustomException) {//실패한 반환
         	CustomException Ce=(CustomException)body;
         	
         	log.debug("사용자 실패 처리");
         	return new ResponseDto("empty",status,Ce.getMsg());
-        }else if(body instanceof Exception){
+        }
+        if(body instanceof Exception){
         	Exception e=(Exception)body;
         	
         	log.debug("내부 실패 처리");
