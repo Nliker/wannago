@@ -5,8 +5,6 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
@@ -54,6 +52,9 @@ public class MediaServiceImpl implements MediaService {
 	@Value("${file.image.defualtImageFile}")
 	private String defualtImageFile;
 	
+	
+	@Value("${file.video.streaming.chunkSize}")
+	private long chunkSize;
 	private final MediaMapper mediaMapper;
 	private final ConceptMapper conceptMapper;
 	
@@ -187,27 +188,6 @@ public class MediaServiceImpl implements MediaService {
                 .body(region);
 	}
 	
-	
-	private ResourceRegion getVideoRegion(Resource resource,HttpHeaders headers) throws Exception{
-        long chunkSize = 1024 * 1024 * 2;
-        long contentLength = resource.contentLength();
-
-        ResourceRegion region;
-
-        try {
-        	HttpRange httpRange = headers.getRange().stream().findFirst().get();
-            long start = httpRange.getRangeStart(contentLength);
-            long end = httpRange.getRangeEnd(contentLength);
-            long rangeLength = Long.min(chunkSize, end -start + 1);
-
-            region = new ResourceRegion(resource, start, rangeLength);
-        } catch (Exception e) {
-            long rangeLength = Long.min(chunkSize, contentLength);
-            region = new ResourceRegion(resource, 0, rangeLength);
-        }
-        return region;
-	}
-
 	@Override
 	public ResponseEntity<Resource> sendAttachMedia(int mediaNo, String userId) throws Exception {
 		MediaDto media=mediaMapper.selectByMediaNo(mediaNo);
@@ -230,5 +210,24 @@ public class MediaServiceImpl implements MediaService {
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		
 		return ResponseEntity.ok().headers(headers).body(resource);
+	}
+	
+	private ResourceRegion getVideoRegion(Resource resource,HttpHeaders headers) throws Exception{
+        long contentLength = resource.contentLength();
+
+        ResourceRegion region;
+
+        try {
+        	HttpRange httpRange = headers.getRange().stream().findFirst().get();
+            long start = httpRange.getRangeStart(contentLength);
+            long end = httpRange.getRangeEnd(contentLength);
+            long rangeLength = Long.min(this.chunkSize, end -start + 1);
+
+            region = new ResourceRegion(resource, start, rangeLength);
+        } catch (Exception e) {
+            long rangeLength = Long.min(this.chunkSize, contentLength);
+            region = new ResourceRegion(resource, 0, rangeLength);
+        }
+        return region;
 	}
 }
