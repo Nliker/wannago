@@ -199,8 +199,7 @@ public class FileUtilImpl implements FileUtil{
         
         ArrayList<Thread> threadList=new ArrayList<Thread>();
         log.info("Video length: {} seconds", durationInSeconds); 
-        for(int time=1;time<durationInSeconds;time++) {
-        	log.debug("time: "+time+" processing Streaming thumbnail");
+        for(int time=0;time<=durationInSeconds;time++) {
         	File saveThumbnailPath=new File(folder,time+"."+this.thumbnailImageFormat);
             Runnable r = new ThreadStreamImage(time,saveThumbnailPath,source,width,height,this.thumbnailImageFormat);
             Thread thread = new Thread(r);   
@@ -210,7 +209,6 @@ public class FileUtilImpl implements FileUtil{
         for(Thread thread:threadList) {
         	thread.join();
         }
-        
         long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
         long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
         log.debug("start:"+beforeTime+" | "+"end: "+afterTime+" | "+" processTime: "+ secDiffTime);
