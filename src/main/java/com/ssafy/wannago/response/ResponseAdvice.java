@@ -3,10 +3,8 @@ package com.ssafy.wannago.response;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.MethodParameter;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceRegion;
-import org.springframework.http.HttpRange;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -39,7 +37,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         }
         
         log.debug("body class: "+body.getClass().toString());
-        if(body instanceof ResourceRegion) {
+        if(body instanceof ResourceRegion || body instanceof Resource) {
         	return body;
         }else if (body instanceof CustomException) {//실패한 반환
         	CustomException Ce=(CustomException)body;
