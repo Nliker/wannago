@@ -31,6 +31,7 @@ public class ThreadStreamImage implements Runnable{
 	}
 	@Override
 	public void run() {
+		log.debug("=============time: "+time+" processing Streaming thumbnail start");
 		FrameGrab grab;
 		try {
 			grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(this.source));
@@ -44,6 +45,9 @@ public class ThreadStreamImage implements Runnable{
 		} catch (IOException | JCodecException e) {
 			e.printStackTrace();
 		}
+		log.debug("time: "+time+" processing Streaming thumbnail end===============");
+   
+		
 	}
 
 }
