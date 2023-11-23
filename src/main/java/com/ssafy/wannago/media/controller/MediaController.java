@@ -68,4 +68,11 @@ public class MediaController {
 		return mediaService.sendAttachMedia(mediaNo,authentication.getName());
 	}
 	
+	@GetMapping("/{mediaNo}/video/thumbnail/{sec}")
+	public ResponseEntity<Resource> mediaThumbnailBySecond(@PathVariable int sec,@PathVariable int mediaNo) throws Exception{
+		log.debug("Get Medias/No/video/thumbNail/sec");
+		return mediaService.sendVideoThumbnailBySecond(mediaNo,sec);
+	}
+	
+	
 }

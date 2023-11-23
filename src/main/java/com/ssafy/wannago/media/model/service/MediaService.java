@@ -13,4 +13,5 @@ public interface MediaService {
 	void deleteMedia(int mediaNo,String userId) throws Exception;
 	ResponseEntity<Resource> sendDefaultImage(int mediaNo) throws Exception;
 	ResponseEntity<Resource> sendAttachMedia(int mediaNo, String userId) throws Exception;
+	ResponseEntity<Resource> sendVideoThumbnailBySecond(int mediaNo,int sec) throws Exception;
 }

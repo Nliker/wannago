@@ -52,6 +52,8 @@ public class MediaServiceImpl implements MediaService {
 	@Value("${file.image.defualtImageFile}")
 	private String defualtImageFile;
 	
+	@Value("${file.video.stream.thumnail.path}")
+	private String streamingThumbnailPath;
 	
 	@Value("${file.video.streaming.chunkSize}")
 	private long chunkSize;
@@ -229,5 +231,32 @@ public class MediaServiceImpl implements MediaService {
             region = new ResourceRegion(resource, 0, rangeLength);
         }
         return region;
+	}
+
+	@Override
+	public ResponseEntity<Resource> sendVideoThumbnailBySecond(int mediaNo,int sec) throws Exception {
+		MediaDto media=mediaMapper.selectByMediaNo(mediaNo);
+		if(media==null) {
+			throw new MediaException(MediaErrorCode.NotFoundMedia.getCode(),MediaErrorCode.NotFoundMedia.getDescription());
+		}
+		if(!"video".equals(media.getMediaType())){
+			throw new MediaException(MediaErrorCode.NotCorrectType.getCode(),MediaErrorCode.NotCorrectType.getDescription());
+		}
+
+		Path filePath = Paths.get(streamingThumbnailPath +File.separator+ media.getFileNameWithoutExtension()+File.separator+sec+"."+this.thumbnailImageFormat);
+		
+		if(!Files.exists(filePath)) {
+			throw new FileException(FileErrorCode.NotFoundFile.getCode(),FileErrorCode.NotFoundFile.getDescription());
+		}
+		
+		final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(
+				filePath.toString()
+        )));
+		
+        return ResponseEntity
+        		.ok()
+        		.contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
+                .contentLength(inputStream.contentLength())
+                .body(inputStream);
 	}
 }
