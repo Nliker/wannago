@@ -33,8 +33,12 @@ public class FileUtilFactoryImpl implements FileUtilFactory {
 	@Value("${file.image.thumbnail.Format}")
 	private String thumbnailImageFormat;
 	
+	
+	@Value("${file.video.stream.thumnail.path}")
+	private String streamingThumbnailPath;
+	
 	@Override
 	public FileUtil getInstance(MultipartFile[] files) {
-		return new FileUtilImpl(files,this.uploadPath,this.videoThumbPath,this.imageThumbPath,this.imageThumbRatio,this.thumbnailImageFormat);
+		return new FileUtilImpl(files,this.uploadPath,this.videoThumbPath,this.imageThumbPath,this.imageThumbRatio,this.thumbnailImageFormat,this.streamingThumbnailPath);
 	}
 }

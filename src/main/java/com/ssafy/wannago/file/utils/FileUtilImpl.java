@@ -2,6 +2,8 @@ package com.ssafy.wannago.file.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import org.jcodec.api.FrameGrab;
+import org.jcodec.api.JCodecException;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
@@ -39,14 +42,22 @@ public class FileUtilImpl implements FileUtil{
 	private String imageThumbPath;
 	private int imageThumbRatio;
 	private String thumbnailImageFormat;
+	private String streamingThumbnailPath;
 	
-	public FileUtilImpl(MultipartFile[] files,String uploadPath,String videoResizePath,String imageThumbPath,int imageThumbRatio,String thumbnailImageFormat) {
+	public FileUtilImpl(MultipartFile[] files
+			,String uploadPath
+			,String videoResizePath
+			,String imageThumbPath
+			,int imageThumbRatio
+			,String thumbnailImageFormat
+			,String streamingThumbnailPath) {
 		this.files=files;
 		this.uploadPath=uploadPath;
 		this.videoResizePath=videoResizePath;
 		this.imageThumbPath=imageThumbPath;
 		this.imageThumbRatio=imageThumbRatio;
 		this.thumbnailImageFormat=thumbnailImageFormat;
+		this.streamingThumbnailPath=streamingThumbnailPath;
 	}
 	
 	@Override
@@ -126,7 +137,7 @@ public class FileUtilImpl implements FileUtil{
 		File thumbnailFile = new File(thumbNailFolder,media.getFileNameWithoutExtension()+"."+this.thumbnailImageFormat);
 		log.debug(thumbnailFile.toString());
         generateVideoThumbnail(resizeFile,thumbnailFile);
-
+        generateVideoStreamingThumbnail(saveFile,media);
         long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
         long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
         log.debug("start:"+beforeTime+" | "+"end: "+afterTime+" | "+" processTime: "+ secDiffTime);
@@ -163,12 +174,46 @@ public class FileUtilImpl implements FileUtil{
 	}
 	
 	private void generateVideoThumbnail(File source, File thumbnail) throws Exception {
-//		FrameGrab frameGrab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(source));
-//        double durationInSeconds = frameGrab.getVideoTrack().getMeta().getTotalDuration();
-//        log.info("Video length: {} seconds", durationInSeconds);
 		int frameNumber = 0;
 		Picture picture = FrameGrab.getFrameFromFile(source, frameNumber);
 		BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
 		ImageIO.write(bufferedImage,this.thumbnailImageFormat, thumbnail);
+	}
+	
+	private void generateVideoStreamingThumbnail(File source,MediaDto media) throws Exception{
+		log.debug("==============generateVideoStreamingThumbnail===============");
+		long beforeTime = System.currentTimeMillis(); 
+		
+		FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(source));
+        int durationInSeconds = (int)grab.getVideoTrack().getMeta().getTotalDuration();
+
+        Picture thumbnail=grab.getNativeFrame();
+        BufferedImage bufferedImage = AWTUtil.toBufferedImage(thumbnail);
+        
+        int width= (int) (bufferedImage.getWidth()/this.imageThumbRatio);
+        int height= (int) (bufferedImage.getHeight()/this.imageThumbRatio);
+        
+        File folder=new File(streamingThumbnailPath+File.separator+media.getFileNameWithoutExtension());
+        if (!folder.exists())
+            folder.mkdirs();
+        
+        ArrayList<Thread> threadList=new ArrayList<Thread>();
+        log.info("Video length: {} seconds", durationInSeconds); 
+        for(int time=1;time<durationInSeconds;time++) {
+        	log.debug("time: "+time+" processing Streaming thumbnail");
+        	File saveThumbnailPath=new File(folder,time+"."+this.thumbnailImageFormat);
+            Runnable r = new ThreadStreamImage(time,saveThumbnailPath,source,width,height,this.thumbnailImageFormat);
+            Thread thread = new Thread(r);   
+            threadList.add(thread);
+            thread.start();
+        }
+        for(Thread thread:threadList) {
+        	thread.join();
+        }
+        
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+        log.debug("start:"+beforeTime+" | "+"end: "+afterTime+" | "+" processTime: "+ secDiffTime);
+        log.debug("===================generateImageThumbnail end===========================");
 	}
 }
