@@ -72,7 +72,8 @@ public class MediaServiceImpl implements MediaService {
 			throw new MediaException(MediaErrorCode.NotCorrectType.getCode(),MediaErrorCode.NotCorrectType.getDescription());
 		}
 		
-		String filePath=uploadPath+ media.getSavePath();
+		String filePath=uploadPath+ File.separator+media.getSavePath();
+
 		if(!Files.exists(Paths.get(filePath))) {
 			throw new FileException(FileErrorCode.NotFoundFile.getCode(),FileErrorCode.NotFoundFile.getDescription());
 		}
@@ -108,7 +109,6 @@ public class MediaServiceImpl implements MediaService {
 		}
 		
 		String mediaSaveName=media.getFileNameWithoutExtension()+"."+this.thumbnailImageFormat;
-//		String mediaOriginName=media.getOriginFileNameWithoutExtension()+"."+this.thumbnailImageFormat;
 
 		Path filePath = Paths.get(imageThumbPath +File.separator+media.getMediaSaveFolder()+ File.separator+mediaSaveName);
 		if(!Files.exists(filePath)) {
