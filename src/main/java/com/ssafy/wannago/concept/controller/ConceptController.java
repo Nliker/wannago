@@ -129,4 +129,11 @@ public class ConceptController {
 		return ResponseEntity.ok().body(result);
 	}
 	
+	@GetMapping("/{conceptNo}/buckets/trash")
+	public ResponseEntity<Map<String,List<BucketResponseDto>>> conceptBucketsTrash(Authentication authentication,@PathVariable int conceptNo) throws Exception{
+		Map<String,List<BucketResponseDto>> result=new HashMap<>();
+		result.put("bucketTrashInfoList",conceptService.getBucketTrash(authentication.getName(),conceptNo));
+		return ResponseEntity.ok().body(result);
+	}
+	
 }
