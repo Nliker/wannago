@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.wannago.media.model.MediaDto;
@@ -117,4 +119,12 @@ public class MediaController {
 		log.debug("Get Medias/No");
 		return mediaService.sendResizeVideo(mediaNo);
 	}
+	
+	@GetMapping("/{mediaNo}/stream")
+	public ResponseEntity<ResourceRegion> mediaStream(@PathVariable String mediaNo,@RequestHeader HttpHeaders headers) throws Exception {
+		log.debug("===================stream===============");
+		
+		return mediaService.streamMedia(mediaNo,headers);
+	}
+	
 }

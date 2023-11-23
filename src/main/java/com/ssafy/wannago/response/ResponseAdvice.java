@@ -39,7 +39,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         }
         
         log.debug("body class: "+body.getClass().toString());
-        if(body instanceof Resource || body instanceof HttpRange) {
+        if(body instanceof ResourceRegion) {
         	return body;
         }else if (body instanceof CustomException) {//실패한 반환
         	CustomException Ce=(CustomException)body;

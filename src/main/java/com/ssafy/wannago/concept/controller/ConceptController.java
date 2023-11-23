@@ -117,7 +117,7 @@ public class ConceptController {
 	@GetMapping("/search")
 	public ResponseEntity<Map<String,List<ConceptSearchResponseDto>>> conceptAttractionList(@RequestParam Map<String, String> map) throws Exception{
 		Map<String,List<ConceptSearchResponseDto>> result=new HashMap<>();
-		result.put("searchConcetpInfoList",conceptService.getSearchConceptList(map));
+		result.put("searchConceptInfoList",conceptService.getSearchConceptList(map));
 		return ResponseEntity.ok().body(result);
 	}
 	

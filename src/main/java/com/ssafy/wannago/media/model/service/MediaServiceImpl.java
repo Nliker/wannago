@@ -9,11 +9,16 @@ import java.nio.file.Paths;
 import javax.annotation.processing.FilerException;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRange;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -149,5 +154,33 @@ public class MediaServiceImpl implements MediaService {
 		headers.setContentDisposition(ContentDisposition.builder("attachment").filename(URLEncoder.encode(media.getMediaOriginFile(), "UTF-8").replaceAll("\\+", "%20")).build());
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		return ResponseEntity.ok().headers(headers).body(resource);
+	}
+	@Override
+	public ResponseEntity<ResourceRegion> streamMedia(String mediaNo, HttpHeaders headers) throws Exception {
+		String videoUrl="/Users/codakcodak/Downloads/sample4.mp4";
+        Resource resource = new FileSystemResource(videoUrl);
+
+        long chunkSize = 10240 * 1024;
+        long contentLength = resource.contentLength();
+
+        ResourceRegion region;
+
+        try {
+            HttpRange httpRange = headers.getRange().stream().findFirst().get();
+            long start = httpRange.getRangeStart(contentLength);
+            long end = httpRange.getRangeEnd(contentLength);
+            long rangeLength = Long.min(chunkSize, end -start + 1);
+
+            region = new ResourceRegion(resource, start, rangeLength);
+        } catch (Exception e) {
+            long rangeLength = Long.min(chunkSize, contentLength);
+            region = new ResourceRegion(resource, 0, rangeLength);
+        }
+
+        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+                .contentType(MediaTypeFactory.getMediaType(resource).get())
+                .header("Accept-Ranges", "bytes")
+                .eTag(videoUrl)
+                .body(region);
 	}
 }
