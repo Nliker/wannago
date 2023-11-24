@@ -10,8 +10,9 @@ import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 
+import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
-
+@Slf4j
 public class ThreadStreamImage implements Runnable{
 	private File savePath;
 	private File source;
@@ -30,6 +31,7 @@ public class ThreadStreamImage implements Runnable{
 	}
 	@Override
 	public void run() {
+		log.debug("=============time: "+time+" processing Streaming thumbnail start");
 		FrameGrab grab;
 		try {
 			grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(this.source));
@@ -43,6 +45,7 @@ public class ThreadStreamImage implements Runnable{
 		} catch (IOException | JCodecException e) {
 			e.printStackTrace();
 		}
+		log.debug("time: "+time+" processing Streaming thumbnail end===============");
    
 		
 	}
