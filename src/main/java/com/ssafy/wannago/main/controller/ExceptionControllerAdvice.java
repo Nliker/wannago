@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.ssafy.wannago.exception.AttractionException;
 import com.ssafy.wannago.exception.BucketException;
 import com.ssafy.wannago.exception.ConceptException;
 import com.ssafy.wannago.exception.CredentialException;
@@ -76,6 +77,14 @@ public class ExceptionControllerAdvice {
 	
 	@ExceptionHandler(FileException.class)
 	public ResponseEntity<CustomException> handleFileException(CustomException e, Model model) {
+		log.debug("Exception type:"+e.getClass());
+		log.error("Exception 발생 : {}",e.getCode());
+		log.error("Exception 발생 : {}",e.getMsg());
+		
+		return ResponseEntity.status(e.getCode()).body(e);
+	}
+	@ExceptionHandler(AttractionException.class)
+	public ResponseEntity<CustomException> handleAttractionException(CustomException e, Model model) {
 		log.debug("Exception type:"+e.getClass());
 		log.error("Exception 발생 : {}",e.getCode());
 		log.error("Exception 발생 : {}",e.getMsg());
