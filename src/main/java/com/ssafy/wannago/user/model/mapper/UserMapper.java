@@ -3,7 +3,6 @@ package com.ssafy.wannago.user.model.mapper;
 import java.sql.SQLException;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.wannago.user.model.UserDto;
 

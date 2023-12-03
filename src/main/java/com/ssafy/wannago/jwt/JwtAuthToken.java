@@ -16,9 +16,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.impl.DefaultClaims;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class JwtAuthToken implements AuthToken<Claims>{
 	private final String token;
 	private final Key key;

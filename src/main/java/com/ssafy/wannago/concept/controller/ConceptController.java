@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.wannago.attraction.model.AttractionResponseDto;
 import com.ssafy.wannago.bucket.model.BucketDto;
 import com.ssafy.wannago.bucket.model.BucketResponseDto;
-import com.ssafy.wannago.bucket.model.service.BucketService;
 import com.ssafy.wannago.concept.model.ConceptDetailResponseDto;
 import com.ssafy.wannago.concept.model.ConceptDto;
 import com.ssafy.wannago.concept.model.ConceptResponseDto;

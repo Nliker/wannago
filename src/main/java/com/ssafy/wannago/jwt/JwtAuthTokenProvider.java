@@ -22,7 +22,6 @@ import com.ssafy.wannago.errorcode.CredentialErrorCode;
 import com.ssafy.wannago.errorcode.JwtErrorCode;
 import com.ssafy.wannago.exception.CredentialException;
 import com.ssafy.wannago.exception.JwtException;
-import com.ssafy.wannago.user.model.UserDto;
 import com.ssafy.wannago.user.model.mapper.UserMapper;
 
 import io.jsonwebtoken.Claims;

@@ -30,10 +30,7 @@ import com.ssafy.wannago.media.model.MediaDto;
 import com.ssafy.wannago.media.model.mapper.MediaMapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MediaServiceImpl implements MediaService {

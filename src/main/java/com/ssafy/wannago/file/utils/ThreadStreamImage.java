@@ -12,6 +12,7 @@ import org.jcodec.scale.AWTUtil;
 
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
+
 @Slf4j
 public class ThreadStreamImage implements Runnable{
 	private File savePath;

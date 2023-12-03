@@ -2,8 +2,6 @@ package com.ssafy.wannago.file.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,20 +12,15 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import org.jcodec.api.FrameGrab;
-import org.jcodec.api.JCodecException;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.wannago.media.model.MediaDto;
 
 import io.github.techgnious.IVCompressor;
-import io.github.techgnious.dto.IVAudioAttributes;
 import io.github.techgnious.dto.IVSize;
 import io.github.techgnious.dto.IVVideoAttributes;
-import io.github.techgnious.dto.ResizeResolution;
 import io.github.techgnious.dto.VideoFormats;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;

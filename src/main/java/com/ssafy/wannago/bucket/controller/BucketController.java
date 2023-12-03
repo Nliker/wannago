@@ -16,9 +16,7 @@ import com.ssafy.wannago.bucket.model.BucketDto;
 import com.ssafy.wannago.bucket.model.service.BucketService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("buckets")
 @RequiredArgsConstructor

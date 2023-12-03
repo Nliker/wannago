@@ -1,7 +1,5 @@
 package com.ssafy.wannago.user.model.service;
 
-import java.sql.SQLException;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ssafy.wannago.user.model.UserDto;
 import com.ssafy.wannago.user.model.UserResponseDto;

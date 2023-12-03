@@ -1,9 +1,6 @@
 package com.ssafy.wannago.file.utils;
 
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import com.ssafy.wannago.media.model.MediaDto;
 
 public interface FileUtil {
